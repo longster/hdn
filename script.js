@@ -47,6 +47,20 @@ function eventDateLabel(iso) {
   );
 })();
 
+// ---------- brand logo always scrolls to true top ----------
+// The global scroll-padding-top offset keeps anchors clear of the sticky
+// header, but it also stops the logo link from landing at the real top.
+// Intercept the click and scroll to 0 explicitly.
+(function () {
+  const brand = document.querySelector(".brand");
+  if (!brand) return;
+  brand.addEventListener("click", function (e) {
+    e.preventDefault();
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  });
+})();
+
 // ---------- footer year ----------
 (function () {
   const yearEl = document.getElementById("year");
@@ -211,6 +225,20 @@ function renderEvents() {
 }
 
 // ---------- jobs ----------
+function jobCard(j) {
+  return (
+    '<div class="dir-card job-card">' +
+    (j.logo ? '<img class="dir-logo" src="' + esc(j.logo) + '" alt="" loading="lazy" width="60" height="60">' : "") +
+    "<h3>" + esc(j.title) + "</h3>" +
+    '<div class="dir-foot">' +
+      (j.link
+        ? '<div class="card-links"><a class="card-link" href="' + esc(j.link) + '">Visit</a></div>'
+        : "") +
+    "</div>" +
+    "</div>"
+  );
+}
+
 function renderJobs() {
   var postingsEl = document.getElementById("job-postings");
   var boardsEl = document.getElementById("job-boards");
@@ -228,17 +256,7 @@ function renderJobs() {
     }
   }
   if (boardsEl) {
-    boardsEl.innerHTML = SITE_DATA.jobs
-      .map(function (j) {
-        return (
-          "<li>" +
-          (j.link
-            ? '<a href="' + esc(j.link) + '">' + esc(j.title) + "</a>"
-            : esc(j.title)) +
-          "</li>"
-        );
-      })
-      .join("");
+    boardsEl.innerHTML = SITE_DATA.jobs.map(jobCard).join("");
   }
 }
 

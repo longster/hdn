@@ -10,8 +10,8 @@
   <link rel="apple-touch-icon" href="assets/hdn-logo-261.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=4">
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=5">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -107,7 +107,7 @@
       <div id="job-postings"></div>
       <h3 class="subsection-heading">Job boards and resources</h3>
       <p>Trusted places to search for work, including boards built for Deaf and hard of hearing job seekers.</p>
-      <ul class="link-list" id="job-boards"></ul>
+      <div class="card-list" id="job-boards"></div>
     </section>
 
     <section class="section" id="guides" aria-labelledby="guides-heading">
@@ -156,14 +156,28 @@
   </main>
 
   <footer class="site-footer">
-    <p><strong>Houston Deaf Network</strong></p>
-    <p><a href="mailto:info@houstondeafnetwork.com">info@houstondeafnetwork.com</a></p>
-    <p><a href="https://facebook.com/groups/1454990569065427/">Facebook group: Connect &amp; Share</a></p>
-    <p class="footer-note">A community project run by Long Duong, a Houston local. Not a nonprofit.</p>
-    <p>&copy; <span id="year">2026</span> Houston Deaf Network. All rights reserved.</p>
+    <div class="footer-inner">
+      <p class="footer-brand"><strong>Houston Deaf Network</strong></p>
+      <nav class="footer-nav" aria-label="Footer">
+        <a href="#find-help">Find Help</a>
+        <a href="#events">Events</a>
+        <a href="#jobs">Jobs</a>
+        <a href="#guides">Guides</a>
+        <a href="#faq">FAQ</a>
+        <a href="#get-listed">Get Listed</a>
+      </nav>
+      <div class="footer-actions">
+        <a class="card-link footer-btn" href="mailto:info@houstondeafnetwork.com">info@houstondeafnetwork.com</a>
+        <a class="card-link footer-btn" href="https://facebook.com/groups/1454990569065427/">Facebook group: Connect &amp; Share</a>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; <span id="year">2026</span> Houston Deaf Network. All rights reserved.</p>
+        <p>A community project run by Long Duong, a Houston local. Not a nonprofit.</p>
+      </div>
+    </div>
   </footer>
 
-  <script src="data.js?v=3"></script>
-  <script src="script.js?v=3"></script>
+  <script src="data.js?v=4"></script>
+  <script src="script.js?v=4"></script>
 </body>
 </html>

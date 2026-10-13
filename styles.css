@@ -1,5 +1,5 @@
-/* Houston Deaf Network, round one visual redesign.
-   Crisp editorial with a signature motif: visualized sound waves.
+/* Houston Deaf Network, round two visual revisions.
+   Fraunces display + Inter body, sound-wave motif, unified full-width sections.
    Theme follows the visitor's OS preference via prefers-color-scheme.
    No manual toggle. */
 
@@ -22,7 +22,7 @@
   --radius: 16px;
   --radius-lg: 20px;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --font-display: "Bricolage Grotesque", "Inter", -apple-system, sans-serif;
+  --font-display: "Fraunces", Georgia, "Times New Roman", serif;
   --wave-stroke: #0e7d5f;
 }
 
@@ -341,7 +341,7 @@ html {
   text-wrap: balance;
 }
 
-.section > p { max-width: 680px; margin-bottom: 1.6rem; }
+.section > p { margin-bottom: 1.6rem; }
 
 .section a { color: var(--accent-deep); }
 
@@ -441,7 +441,7 @@ html {
   background: var(--surface-soft);
 }
 
-.directory-controls { max-width: 720px; margin-bottom: 1rem; }
+.directory-controls { margin-bottom: 1rem; }
 
 .search-label {
   display: block;
@@ -471,9 +471,9 @@ html {
 
 .chip {
   font: inherit;
-  font-size: 0.89rem;
+  font-size: 0.82rem;
   font-weight: 500;
-  padding: 0.42rem 0.95rem;
+  padding: 0.34rem 0.8rem;
   border-radius: 999px;
   border: 1px solid var(--hairline);
   background: var(--surface);
@@ -498,7 +498,6 @@ html {
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
   padding: 1.6rem;
-  max-width: 720px;
   box-shadow: var(--shadow);
 }
 
@@ -524,26 +523,19 @@ html {
   margin: 3rem 0 0.7rem;
 }
 
-/* ---------- jobs ---------- */
-.link-list { list-style: none; max-width: 720px; }
+/* ---------- job board cards ---------- */
+.job-card h3 { font-size: 1.05rem; }
 
-.link-list li {
-  border-bottom: 1px solid var(--hairline);
-  padding: 0.6rem 0;
-}
-
-.link-list a { color: var(--accent-deep); font-weight: 600; text-decoration: none; }
-.link-list a:hover { text-decoration: underline; }
+.job-card .dir-foot { justify-content: flex-start; }
 
 /* ---------- guides ---------- */
-.guide-toc ul { list-style: none; margin-bottom: 2.2rem; max-width: 720px; }
+.guide-toc ul { list-style: none; margin-bottom: 2.2rem; }
 
 .guide-toc li { margin-bottom: 0.45rem; }
 
 .guide-toc a { color: var(--accent-deep); font-weight: 600; }
 
 .guide {
-  max-width: 720px;
   margin-bottom: 3.2rem;
   padding-top: 1.4rem;
   border-top: 1px solid var(--hairline);
@@ -579,8 +571,6 @@ html {
 }
 
 /* ---------- accordion ---------- */
-.accordion { max-width: 720px; }
-
 .accordion-item {
   border: 1px solid var(--hairline);
   border-radius: var(--radius);
@@ -637,7 +627,7 @@ html {
 .accordion-panel[hidden] { display: none; }
 
 /* ---------- contact form ---------- */
-.contact-form { max-width: 560px; display: grid; gap: 1.05rem; }
+.contact-form { display: grid; gap: 1.05rem; }
 
 .contact-form label {
   display: grid;
@@ -699,23 +689,77 @@ html {
 /* ---------- footer ---------- */
 .site-footer {
   border-top: 1px solid var(--hairline);
-  padding: 2.6rem 1.5rem 2.2rem;
-  text-align: center;
+  padding: 3rem 1.5rem 2.2rem;
   color: var(--muted);
   font-size: 0.92rem;
 }
 
-.site-footer a { color: var(--accent-deep); }
-
-.site-footer p { margin-bottom: 0.45rem; }
-
-.site-footer strong {
-  font-family: var(--font-display);
-  color: var(--ink);
-  font-size: 1.05rem;
+.footer-inner {
+  max-width: var(--maxw);
+  margin: 0 auto;
 }
 
-.footer-note { font-size: 0.88rem; }
+.footer-brand { margin-bottom: 0; }
+
+.footer-brand strong {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-size: 1.3rem;
+  letter-spacing: -0.01em;
+}
+
+.footer-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.5rem;
+  margin: 1.3rem 0 1.5rem;
+}
+
+.footer-nav a {
+  color: var(--body);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.footer-nav a:hover { color: var(--accent-deep); }
+
+.footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 2.2rem;
+}
+
+.footer-btn {
+  font-size: 0.92rem;
+  padding: 0.52rem 1.15rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+.footer-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.6rem 1.5rem;
+  flex-wrap: wrap;
+  border-top: 1px solid var(--hairline);
+  padding-top: 1.4rem;
+}
+
+.footer-bottom p { margin: 0; font-size: 0.88rem; }
+
+@media (max-width: 640px) {
+  .footer-inner { text-align: center; }
+  .footer-nav { justify-content: center; }
+  .footer-actions { justify-content: center; }
+  .footer-bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
 
 /* ---------- responsive ---------- */
 @media (max-width: 760px) {
