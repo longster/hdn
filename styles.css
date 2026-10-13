@@ -1,7 +1,7 @@
-/* Houston Deaf Network, round two visual revisions.
+/* Houston Deaf Network, round three revisions.
    Fraunces display + Inter body, sound-wave motif, unified full-width sections.
-   Theme follows the visitor's OS preference via prefers-color-scheme.
-   No manual toggle. */
+   Theme: 3-state manual toggle (auto/light/dark, persisted in localStorage),
+   defaulting to auto which follows the visitor's OS preference. */
 
 :root {
   --bg: #fbfaf8;
@@ -26,8 +26,27 @@
   --wave-stroke: #0e7d5f;
 }
 
+/* Explicit dark choice, or dark OS with no explicit light choice. */
+:root[data-theme="dark"] {
+  --bg: #0d0e10;
+  --surface: #15171b;
+  --surface-soft: #1b1e23;
+  --ink: #f5f2ea;
+  --body: #c8c3b6;
+  --muted: #98917f;
+  --hairline: #272a31;
+  --accent: #2fd49f;
+  --accent-deep: #8deccb;
+  --accent-ink: #06281c;
+  --warm: #f2b73c;
+  --header-bg: rgba(13, 14, 16, 0.9);
+  --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
+  --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 14px 34px rgba(0, 0, 0, 0.45);
+  --wave-stroke: #2fd49f;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     --bg: #0d0e10;
     --surface: #15171b;
     --surface-soft: #1b1e23;
@@ -105,10 +124,41 @@ html {
 .logo { display: block; border-radius: 10px; }
 .logo-light { display: none; }
 
+/* Logo swap follows the effective theme, manual choice included. */
+:root[data-theme="dark"] .logo-dark { display: none; }
+:root[data-theme="dark"] .logo-light { display: block; }
+
 @media (prefers-color-scheme: dark) {
-  .logo-dark { display: none; }
-  .logo-light { display: block; }
+  :root:not([data-theme="light"]) .logo-dark { display: none; }
+  :root:not([data-theme="light"]) .logo-light { display: block; }
 }
+
+/* ---------- theme toggle ---------- */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: transparent;
+  border: 2px solid var(--hairline);
+  color: var(--ink);
+  cursor: pointer;
+  transition: border-color 0.25s ease, color 0.25s ease, transform 0.25s ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent-deep);
+  transform: translateY(-2px);
+}
+
+.theme-toggle svg { display: none; }
+.theme-toggle[data-state="auto"] .tt-auto { display: block; }
+.theme-toggle[data-state="light"] .tt-sun { display: block; }
+.theme-toggle[data-state="dark"] .tt-moon { display: block; }
 
 .site-nav { display: flex; align-items: center; gap: 1.35rem; }
 
@@ -191,7 +241,7 @@ html {
 }
 
 .kicker {
-  color: var(--accent-deep);
+  color: var(--warm);
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
@@ -222,7 +272,7 @@ html {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.1rem;
-  max-width: 960px;
+  max-width: var(--maxw);
   margin: 0 auto;
   text-align: left;
 }
@@ -311,22 +361,27 @@ html {
   font-weight: 700;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--accent-deep);
+  color: var(--warm);
   margin-bottom: 0.7rem;
 }
 
+/* Amber wave mark, since amber is the non-link label color. */
 .eyebrow::before {
   content: "";
   width: 34px;
   height: 12px;
   flex-shrink: 0;
   background: no-repeat center / contain
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 12'%3E%3Cpath d='M1 6 C8 1 14 11 21 6 S 30 1 33 6' fill='none' stroke='%230e7d5f' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 12'%3E%3Cpath d='M1 6 C8 1 14 11 21 6 S 30 1 33 6' fill='none' stroke='%23c07a08' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+:root[data-theme="dark"] .eyebrow::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 12'%3E%3Cpath d='M1 6 C8 1 14 11 21 6 S 30 1 33 6' fill='none' stroke='%23f2b73c' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
 }
 
 @media (prefers-color-scheme: dark) {
-  .eyebrow::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 12'%3E%3Cpath d='M1 6 C8 1 14 11 21 6 S 30 1 33 6' fill='none' stroke='%232fd49f' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+  :root:not([data-theme="light"]) .eyebrow::before {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 34 12'%3E%3Cpath d='M1 6 C8 1 14 11 21 6 S 30 1 33 6' fill='none' stroke='%23f2b73c' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
   }
 }
 
@@ -386,7 +441,7 @@ html {
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--accent-deep);
+  color: var(--warm);
   margin-bottom: 0.35rem;
 }
 
@@ -410,17 +465,11 @@ html {
 .dir-foot {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-top: auto;
   padding-top: 1rem;
-}
-
-.verified-badge {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--muted);
 }
 
 .card-links { display: flex; flex-wrap: wrap; gap: 0.5rem; }
@@ -507,7 +556,7 @@ html {
 .event-date {
   font-family: var(--font-display);
   font-weight: 700;
-  color: var(--accent-deep);
+  color: var(--warm);
   font-size: 1rem;
   margin-bottom: 0.35rem;
 }
@@ -526,48 +575,25 @@ html {
 /* ---------- job board cards ---------- */
 .job-card h3 { font-size: 1.05rem; }
 
-.job-card .dir-foot { justify-content: flex-start; }
-
-/* ---------- guides ---------- */
-.guide-toc ul { list-style: none; margin-bottom: 2.2rem; }
-
-.guide-toc li { margin-bottom: 0.45rem; }
-
-.guide-toc a { color: var(--accent-deep); font-weight: 600; }
-
-.guide {
-  margin-bottom: 3.2rem;
-  padding-top: 1.4rem;
-  border-top: 1px solid var(--hairline);
-}
-
-.guide:first-of-type { border-top: 0; padding-top: 0; }
-
-.guide h3 {
-  font-family: var(--font-display);
+/* ---------- guides accordion ---------- */
+.accordion-panel h4 {
   color: var(--ink);
-  font-weight: 700;
-  font-size: 1.45rem;
-  letter-spacing: -0.01em;
-  margin-bottom: 0.8rem;
-  text-wrap: balance;
+  font-size: 1.05rem;
+  margin: 1.2rem 0 0.45rem;
 }
 
-.guide .guide-intro { margin-bottom: 1.2rem; }
+.accordion-panel h4:first-child { margin-top: 0.2rem; }
 
-.guide h4 { color: var(--ink); font-size: 1.05rem; margin: 1.5rem 0 0.45rem; }
-
-.guide p { margin-bottom: 0.85rem; }
+.accordion-panel p { margin-bottom: 0.85rem; }
 
 .guide-closing {
   margin-top: 1.3rem;
   padding: 1.05rem 1.25rem;
-  background: var(--surface);
+  background: var(--surface-soft);
   border: 1px solid var(--hairline);
   border-left: 3px solid var(--accent);
   border-radius: var(--radius);
   font-size: 0.95rem;
-  box-shadow: var(--shadow);
 }
 
 /* ---------- accordion ---------- */
@@ -686,8 +712,9 @@ html {
 
 .form-status { min-height: 1.5em; font-size: 0.95rem; color: var(--accent-deep); }
 
-/* ---------- footer ---------- */
+/* ---------- footer: full-bleed background, centered content ---------- */
 .site-footer {
+  background: var(--surface);
   border-top: 1px solid var(--hairline);
   padding: 3rem 1.5rem 2.2rem;
   color: var(--muted);
@@ -697,6 +724,7 @@ html {
 .footer-inner {
   max-width: var(--maxw);
   margin: 0 auto;
+  text-align: center;
 }
 
 .footer-brand { margin-bottom: 0; }
@@ -711,6 +739,7 @@ html {
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.4rem 1.5rem;
   margin: 1.3rem 0 1.5rem;
 }
@@ -727,6 +756,7 @@ html {
 .footer-actions {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   gap: 0.6rem;
   margin-bottom: 2.2rem;
 }
@@ -736,7 +766,10 @@ html {
   padding: 0.52rem 1.15rem;
   display: inline-flex;
   align-items: center;
+  gap: 0.5rem;
 }
+
+.footer-btn svg { flex-shrink: 0; }
 
 .footer-bottom {
   display: flex;
@@ -746,14 +779,12 @@ html {
   flex-wrap: wrap;
   border-top: 1px solid var(--hairline);
   padding-top: 1.4rem;
+  text-align: left;
 }
 
 .footer-bottom p { margin: 0; font-size: 0.88rem; }
 
 @media (max-width: 640px) {
-  .footer-inner { text-align: center; }
-  .footer-nav { justify-content: center; }
-  .footer-actions { justify-content: center; }
   .footer-bottom {
     flex-direction: column;
     align-items: center;

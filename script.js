@@ -11,14 +11,6 @@ function esc(s) {
     .replace(/"/g, "&quot;");
 }
 
-function verifiedLabel(iso) {
-  if (!iso) return "";
-  const d = new Date(iso + "T12:00:00");
-  if (isNaN(d)) return "";
-  const month = d.toLocaleDateString("en-US", { month: "short" });
-  return "Verified " + month + " " + d.getFullYear();
-}
-
 function eventDateLabel(iso) {
   const d = new Date(iso + "T12:00:00");
   if (isNaN(d)) return iso;
@@ -29,6 +21,38 @@ function eventDateLabel(iso) {
     year: "numeric",
   });
 }
+
+// ---------- theme toggle: auto -> light -> dark -> auto ----------
+// Matches the lduongh portfolio pattern. Explicit choice is stored in
+// localStorage ('hdn-theme') and wins over the OS preference; 'auto'
+// removes the override so the system setting applies again.
+(function () {
+  var btn = document.getElementById("themeToggle");
+  if (!btn) return;
+  var order = ["auto", "light", "dark"];
+  function get() {
+    try {
+      return localStorage.getItem("hdn-theme") || "auto";
+    } catch (e) {
+      return "auto";
+    }
+  }
+  function apply(t) {
+    var root = document.documentElement;
+    if (t === "auto") root.removeAttribute("data-theme");
+    else root.setAttribute("data-theme", t);
+    try {
+      localStorage.setItem("hdn-theme", t);
+    } catch (e) {}
+    btn.setAttribute("data-state", t);
+    btn.setAttribute("aria-label", "Theme: " + t + ". Activate to change.");
+  }
+  apply(get());
+  btn.addEventListener("click", function () {
+    var next = order[(order.indexOf(get()) + 1) % order.length];
+    apply(next);
+  });
+})();
 
 // ---------- mobile nav ----------
 (function () {
@@ -106,7 +130,6 @@ function linkButtons(r) {
 }
 
 function dirCard(r) {
-  var badge = verifiedLabel(r.verified);
   var links = linkButtons(r);
   return (
     '<li class="dir-card">' +
@@ -114,12 +137,7 @@ function dirCard(r) {
     (r.category ? '<p class="dir-eyebrow">' + esc(r.category) + "</p>" : "") +
     "<h3>" + esc(r.name) + "</h3>" +
     (r.description ? '<p class="dir-desc">' + esc(r.description) + "</p>" : "") +
-    ((badge || links)
-      ? '<div class="dir-foot">' +
-        (badge ? '<span class="verified-badge">' + esc(badge) + "</span>" : "") +
-        links +
-        "</div>"
-      : "") +
+    (links ? '<div class="dir-foot">' + links + "</div>" : "") +
     "</li>"
   );
 }
@@ -260,57 +278,23 @@ function renderJobs() {
   }
 }
 
-// ---------- guides ----------
-function renderGuides() {
-  var toc = document.getElementById("guide-toc-list");
-  var list = document.getElementById("guides-list");
-  if (typeof SITE_DATA === "undefined" || !list) return;
-  if (toc) {
-    toc.innerHTML = SITE_DATA.guides
-      .map(function (g) {
-        return '<li><a href="#' + esc(g.id) + '">' + esc(g.title) + "</a></li>";
-      })
-      .join("");
-  }
-  list.innerHTML = SITE_DATA.guides
-    .map(function (g) {
-      var sections = (g.sections || [])
-        .map(function (s) {
-          return "<h4>" + esc(s.heading) + "</h4><p>" + esc(s.body) + "</p>";
-        })
-        .join("");
-      return (
-        '<article class="guide" id="' + esc(g.id) + '" aria-labelledby="' + esc(g.id) + '-title">' +
-        '<h3 id="' + esc(g.id) + '-title">' + esc(g.title) + "</h3>" +
-        '<p class="guide-intro">' + esc(g.intro) + "</p>" +
-        sections +
-        '<p class="guide-closing">' + esc(g.closing) + "</p>" +
-        "</article>"
-      );
-    })
-    .join("");
+// ---------- shared accordion (guides + FAQ) ----------
+function accordionItem(prefix, i, title, panelHtml) {
+  var btnId = prefix + "-btn-" + i;
+  var panelId = prefix + "-panel-" + i;
+  return (
+    '<div class="accordion-item">' +
+    '<button type="button" class="accordion-button" id="' + btnId + '" aria-expanded="false" aria-controls="' + panelId + '">' +
+    "<span>" + esc(title) + '</span><span class="accordion-icon" aria-hidden="true">+</span>' +
+    "</button>" +
+    '<div class="accordion-panel" id="' + panelId + '" role="region" aria-labelledby="' + btnId + '" hidden>' +
+    panelHtml +
+    "</div></div>"
+  );
 }
 
-// ---------- FAQ accordion ----------
-function renderFaq() {
-  var list = document.getElementById("faq-list");
-  if (!list || typeof SITE_DATA === "undefined") return;
-  list.innerHTML = SITE_DATA.faqs
-    .map(function (f, i) {
-      var btnId = "faq-btn-" + i;
-      var panelId = "faq-panel-" + i;
-      return (
-        '<div class="accordion-item">' +
-        '<button type="button" class="accordion-button" id="' + btnId + '" aria-expanded="false" aria-controls="' + panelId + '">' +
-        "<span>" + esc(f.question) + '</span><span class="accordion-icon" aria-hidden="true">+</span>' +
-        "</button>" +
-        '<div class="accordion-panel" id="' + panelId + '" role="region" aria-labelledby="' + btnId + '" hidden>' +
-        "<p>" + esc(f.answer) + "</p>" +
-        "</div></div>"
-      );
-    })
-    .join("");
-  list.querySelectorAll(".accordion-button").forEach(function (btn) {
+function bindAccordion(container) {
+  container.querySelectorAll(".accordion-button").forEach(function (btn) {
     btn.addEventListener("click", function () {
       var open = btn.getAttribute("aria-expanded") === "true";
       var panel = document.getElementById(btn.getAttribute("aria-controls"));
@@ -320,6 +304,39 @@ function renderFaq() {
       if (icon) icon.textContent = open ? "+" : "−";
     });
   });
+}
+
+// ---------- guides ----------
+function renderGuides() {
+  var list = document.getElementById("guides-list");
+  if (typeof SITE_DATA === "undefined" || !list) return;
+  list.innerHTML = SITE_DATA.guides
+    .map(function (g, i) {
+      var sections = (g.sections || [])
+        .map(function (s) {
+          return "<h4>" + esc(s.heading) + "</h4><p>" + esc(s.body) + "</p>";
+        })
+        .join("");
+      var panel =
+        '<p class="guide-intro">' + esc(g.intro) + "</p>" +
+        sections +
+        '<p class="guide-closing">' + esc(g.closing) + "</p>";
+      return accordionItem("guide", i, g.title, panel);
+    })
+    .join("");
+  bindAccordion(list);
+}
+
+// ---------- FAQ accordion ----------
+function renderFaq() {
+  var list = document.getElementById("faq-list");
+  if (!list || typeof SITE_DATA === "undefined") return;
+  list.innerHTML = SITE_DATA.faqs
+    .map(function (f, i) {
+      return accordionItem("faq", i, f.question, "<p>" + esc(f.answer) + "</p>");
+    })
+    .join("");
+  bindAccordion(list);
 }
 
 // ---------- contact form via FormSubmit ajax ----------
@@ -341,7 +358,7 @@ function renderFaq() {
       form.reset();
     } catch (err) {
       status.textContent =
-        "Something went wrong. Please try again or email info@houstondeafnetwork.com directly.";
+        "Something went wrong. Please try again in a bit.";
     }
   });
 })();
