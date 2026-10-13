@@ -93,15 +93,19 @@ function linkButtons(r) {
 
 function dirCard(r) {
   var badge = verifiedLabel(r.verified);
+  var links = linkButtons(r);
   return (
     '<li class="dir-card">' +
-    (r.logo ? '<img class="dir-logo" src="' + esc(r.logo) + '" alt="" loading="lazy" width="56" height="56">' : "") +
-    '<div class="dir-card-top"><h3>' + esc(r.name) + "</h3>" +
-    (r.category ? '<span class="category-tag">' + esc(r.category) + "</span>" : "") +
-    "</div>" +
-    (r.description ? "<p>" + esc(r.description) + "</p>" : "") +
-    (badge ? '<span class="verified-badge">' + esc(badge) + "</span>" : "") +
-    linkButtons(r) +
+    (r.logo ? '<img class="dir-logo" src="' + esc(r.logo) + '" alt="" loading="lazy" width="60" height="60">' : "") +
+    (r.category ? '<p class="dir-eyebrow">' + esc(r.category) + "</p>" : "") +
+    "<h3>" + esc(r.name) + "</h3>" +
+    (r.description ? '<p class="dir-desc">' + esc(r.description) + "</p>" : "") +
+    ((badge || links)
+      ? '<div class="dir-foot">' +
+        (badge ? '<span class="verified-badge">' + esc(badge) + "</span>" : "") +
+        links +
+        "</div>"
+      : "") +
     "</li>"
   );
 }
@@ -192,13 +196,13 @@ function renderEvents() {
   list.innerHTML = upcoming
     .map(function (e) {
       return (
-        '<div class="dir-card">' +
-        '<div class="dir-card-top"><h3>' + esc(e.name) + "</h3></div>" +
+        '<div class="dir-card event-card">' +
         (e.date ? '<p class="event-date">' + esc(eventDateLabel(e.date)) + "</p>" : "") +
+        "<h3>" + esc(e.name) + "</h3>" +
         (e.location ? '<p class="event-location">' + esc(e.location) + "</p>" : "") +
-        (e.description ? "<p>" + esc(e.description) + "</p>" : "") +
+        (e.description ? '<p class="dir-desc">' + esc(e.description) + "</p>" : "") +
         (e.link
-          ? '<div class="card-links"><a class="card-link" href="' + esc(e.link) + '">More info</a></div>'
+          ? '<div class="dir-foot"><div class="card-links"><a class="card-link" href="' + esc(e.link) + '">More info</a></div></div>'
           : "") +
         "</div>"
       );

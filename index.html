@@ -8,7 +8,10 @@
   <link rel="icon" href="assets/hdn-logo-favicon-light.png" media="(prefers-color-scheme: light)">
   <link rel="icon" href="assets/hdn-logo-favicon-dark.png" media="(prefers-color-scheme: dark)">
   <link rel="apple-touch-icon" href="assets/hdn-logo-261.png">
-  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400..800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=4">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -34,26 +37,48 @@
 
   <main id="main-content">
     <section class="hero" aria-labelledby="hero-heading">
+      <div class="wave-field" aria-hidden="true">
+        <svg viewBox="0 0 1200 140" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <defs>
+            <path id="wavePath" d="M-40,70 C0,46 40,94 80,70 C120,46 160,94 200,70 C240,46 280,94 320,70 C360,46 400,94 440,70 C480,46 520,94 560,70 C600,46 640,94 680,70 C720,46 760,94 800,70 C840,46 880,94 920,70 C960,46 1000,94 1040,70 C1080,46 1120,94 1160,70 C1200,46 1240,94 1280,70" fill="none"/>
+          </defs>
+          <g class="wave-drift" stroke="currentColor" stroke-width="2" fill="none">
+            <use href="#wavePath" y="-34" opacity="0.5"/>
+            <use href="#wavePath" y="-8" opacity="0.32"/>
+            <use href="#wavePath" y="18" opacity="0.2"/>
+            <use href="#wavePath" y="42" opacity="0.12"/>
+          </g>
+        </svg>
+      </div>
+      <div class="hero-inner">
       <p class="kicker">Greater Houston, Texas</p>
       <h1 id="hero-heading">Where Houston's Deaf community connects</h1>
       <p class="lede">Houston Deaf Network is a community project run solo by Long Duong, a Houston local. Not a nonprofit, no office, no services, just one place to find local resources, events, and each other.</p>
       <div class="goal-cards">
         <a class="goal-card" href="#find-help">
+          <span class="goal-card-num" aria-hidden="true">01</span>
           <span class="goal-card-title">Find help or a service</span>
           <span class="goal-card-text">Browse local resources, interpreters, health services, and Deaf-owned businesses.</span>
+          <span class="goal-card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
         </a>
         <a class="goal-card" href="#events">
+          <span class="goal-card-num" aria-hidden="true">02</span>
           <span class="goal-card-title">Find events</span>
           <span class="goal-card-text">Deaf socials, coffee chats, sports, and community gatherings around Houston.</span>
+          <span class="goal-card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
         </a>
         <a class="goal-card" href="#get-listed">
+          <span class="goal-card-num" aria-hidden="true">03</span>
           <span class="goal-card-title">Submit a listing</span>
           <span class="goal-card-text">Add your business, event, or job opening. Listings are free.</span>
+          <span class="goal-card-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h15M13 6l6 6-6 6"/></svg></span>
         </a>
+      </div>
       </div>
     </section>
 
     <section class="section" id="find-help" aria-labelledby="find-help-heading">
+      <p class="eyebrow">Directory</p>
       <h2 id="find-help-heading">Find help or a service</h2>
       <p>Local services reviewed for relevance to the Deaf and Hard of Hearing community. Search by name or filter by category.</p>
       <div class="directory-controls">
@@ -67,6 +92,7 @@
     </section>
 
     <section class="section" id="events" aria-labelledby="events-heading">
+      <p class="eyebrow">Calendar</p>
       <h2 id="events-heading">Events</h2>
       <p>Upcoming Deaf and ASL-friendly gatherings around Houston. Know of one missing here? <a href="#get-listed">Submit it</a>.</p>
       <div class="card-list" id="events-list"></div>
@@ -76,6 +102,7 @@
     </section>
 
     <section class="section" id="jobs" aria-labelledby="jobs-heading">
+      <p class="eyebrow">Work</p>
       <h2 id="jobs-heading">Jobs</h2>
       <div id="job-postings"></div>
       <h3 class="subsection-heading">Job boards and resources</h3>
@@ -84,6 +111,7 @@
     </section>
 
     <section class="section" id="guides" aria-labelledby="guides-heading">
+      <p class="eyebrow">How-tos</p>
       <h2 id="guides-heading">Guides</h2>
       <p>Practical how-tos for Deaf life in Houston. Short, plain, and kept up to date.</p>
       <nav class="guide-toc" aria-label="Guides">
@@ -93,11 +121,13 @@
     </section>
 
     <section class="section" id="faq" aria-labelledby="faq-heading">
+      <p class="eyebrow">Answers</p>
       <h2 id="faq-heading">Frequently asked questions</h2>
       <div class="accordion" id="faq-list"></div>
     </section>
 
     <section class="section" id="get-listed" aria-labelledby="get-listed-heading">
+      <p class="eyebrow">Contribute</p>
       <h2 id="get-listed-heading">Get listed</h2>
       <p>Submit a business, event, job opening, or resource, or suggest a correction to something already listed.</p>
       <!-- FormSubmit mirrors the current live site: submissions go to info@houstondeafnetwork.com.
@@ -134,6 +164,6 @@
   </footer>
 
   <script src="data.js?v=3"></script>
-  <script src="script.js?v=2"></script>
+  <script src="script.js?v=3"></script>
 </body>
 </html>
