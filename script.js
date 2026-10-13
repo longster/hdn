@@ -163,7 +163,7 @@ function renderDirectory() {
   if (empty) empty.hidden = rows.length > 0;
 }
 
-function renderChips() {
+function renderFilterTags() {
   var wrap = document.getElementById("category-chips");
   if (!wrap || typeof SITE_DATA === "undefined") return;
   var present = {};
@@ -178,7 +178,7 @@ function renderChips() {
   wrap.innerHTML = cats
     .map(function (c) {
       return (
-        '<button type="button" class="chip" data-category="' +
+        '<button type="button" class="filter-tag" data-category="' +
         esc(c) +
         '" aria-pressed="' +
         (c === activeCategory) +
@@ -188,16 +188,29 @@ function renderChips() {
       );
     })
     .join("");
-  wrap.querySelectorAll(".chip").forEach(function (btn) {
+  wrap.querySelectorAll(".filter-tag").forEach(function (btn) {
     btn.addEventListener("click", function () {
       activeCategory = btn.getAttribute("data-category");
-      wrap.querySelectorAll(".chip").forEach(function (b) {
+      wrap.querySelectorAll(".filter-tag").forEach(function (b) {
         b.setAttribute("aria-pressed", String(b === btn));
       });
       renderDirectory();
     });
   });
 }
+
+// ---------- filter panel toggle ----------
+(function () {
+  const toggle = document.getElementById("filter-toggle");
+  const panel = document.getElementById("category-panel");
+  if (!toggle || !panel) return;
+  toggle.addEventListener("click", function () {
+    const open = panel.hasAttribute("hidden");
+    if (open) panel.removeAttribute("hidden");
+    else panel.setAttribute("hidden", "");
+    toggle.setAttribute("aria-expanded", String(open));
+  });
+})();
 
 function renderSocials() {
   var grid = document.getElementById("socials-grid");
@@ -285,7 +298,7 @@ function accordionItem(prefix, i, title, panelHtml) {
   return (
     '<div class="accordion-item">' +
     '<button type="button" class="accordion-button" id="' + btnId + '" aria-expanded="false" aria-controls="' + panelId + '">' +
-    "<span>" + esc(title) + '</span><span class="accordion-icon" aria-hidden="true">+</span>' +
+    "<span>" + esc(title) + '</span><span class="accordion-icon" aria-hidden="true"><span class="ai-bar ai-bar-h"></span><span class="ai-bar ai-bar-v"></span></span>' +
     "</button>" +
     '<div class="accordion-panel" id="' + panelId + '" role="region" aria-labelledby="' + btnId + '" hidden>' +
     panelHtml +
@@ -300,8 +313,6 @@ function bindAccordion(container) {
       var panel = document.getElementById(btn.getAttribute("aria-controls"));
       btn.setAttribute("aria-expanded", String(!open));
       if (panel) panel.hidden = open;
-      var icon = btn.querySelector(".accordion-icon");
-      if (icon) icon.textContent = open ? "+" : "−";
     });
   });
 }
@@ -364,7 +375,7 @@ function renderFaq() {
 })();
 
 // ---------- render everything ----------
-renderChips();
+renderFilterTags();
 renderDirectory();
 renderSocials();
 renderEvents();
