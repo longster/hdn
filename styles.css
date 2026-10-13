@@ -330,6 +330,16 @@ details p { margin-top: 0.6rem; }
 .goal-card-text { font-size: 0.95rem; color: var(--muted); }
 
 /* ---------- directory ---------- */
+.dir-logo {
+  width: 56px;
+  height: 56px;
+  object-fit: contain;
+  border-radius: 14px;
+  background: #ffffff;
+  padding: 6px;
+  margin-bottom: 0.6rem;
+  border: 1px solid var(--hairline);
+}
 .directory-controls { max-width: 720px; margin-bottom: 1rem; }
 
 .search-label {

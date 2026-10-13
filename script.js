@@ -95,6 +95,7 @@ function dirCard(r) {
   var badge = verifiedLabel(r.verified);
   return (
     '<li class="dir-card">' +
+    (r.logo ? '<img class="dir-logo" src="' + esc(r.logo) + '" alt="" loading="lazy" width="56" height="56">' : "") +
     '<div class="dir-card-top"><h3>' + esc(r.name) + "</h3>" +
     (r.category ? '<span class="category-tag">' + esc(r.category) + "</span>" : "") +
     "</div>" +
