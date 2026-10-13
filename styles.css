@@ -46,6 +46,11 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+/* Keep anchored sections clear of the sticky header. */
+html {
+  scroll-padding-top: 5.5rem;
+}
+
 /* ---------- header ---------- */
 .site-header {
   position: sticky;
