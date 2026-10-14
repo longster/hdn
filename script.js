@@ -394,12 +394,16 @@ function renderGuides() {
 }
 
 // ---------- FAQ accordion ----------
+// The name link is injected only where the answer text names Long Duong
+// (currently the first and last FAQ), keeping data.js plain text.
+var NAME_LINK = '<a href="https://lduong.com" target="_blank" rel="noopener" aria-label="Long Duong\'s portfolio, opens in new tab">Long Duong ' + extIcon() + "</a>";
+
 function renderFaq() {
   var list = document.getElementById("faq-list");
   if (!list || typeof SITE_DATA === "undefined") return;
   list.innerHTML = SITE_DATA.faqs
     .map(function (f, i) {
-      return accordionItem("faq", i, f.question, "<p>" + esc(f.answer) + "</p>");
+      return accordionItem("faq", i, f.question, "<p>" + esc(f.answer).split("Long Duong").join(NAME_LINK) + "</p>");
     })
     .join("");
   bindAccordion(list);
