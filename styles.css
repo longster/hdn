@@ -74,7 +74,7 @@ html { scroll-behavior: smooth; }
   .wave-drift, .wave-field use { animation: none !important; }
   .goal-card, .dir-card { transition: none !important; }
   .accordion-icon, .ai-bar, .theme-toggle, .goal-card-arrow,
-  .filter-toggle, .card-link, .btn-primary { transition: none !important; }
+  .filter-toggle, .card-link, .btn-primary, .job-chip { transition: none !important; }
 }
 
 body {
@@ -509,8 +509,26 @@ html {
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
-/* External-link indicator: arrow-out-of-box glyph, decorative. */
-.ext-icon { flex-shrink: 0; }
+/* External-link indicator: small superscript-style marker, decorative. */
+.ext-icon {
+  flex-shrink: 0;
+  width: 9px;
+  height: 9px;
+}
+
+/* Superscript position next to inline text links. */
+.lede a .ext-icon,
+.site-footer p a .ext-icon {
+  vertical-align: super;
+  margin-left: 0.22em;
+}
+
+/* Upper-right corner inside pill buttons. */
+.card-link .ext-icon {
+  align-self: flex-start;
+  margin-top: 0.12em;
+  margin-left: 0.12em;
+}
 
 .card-link:hover {
   border-color: var(--accent);
@@ -664,8 +682,59 @@ html {
   margin: 3rem 0 0.7rem;
 }
 
-/* ---------- job board cards ---------- */
-.job-card h3 { font-size: 1.05rem; }
+/* ---------- job board link chips ---------- */
+/* Compact horizontal link items: thumbnail + title, whole chip is one link. */
+.job-board-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+  align-items: stretch;
+}
+
+.job-chip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-height: 44px;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: 999px;
+  padding: 0.4rem 1.7rem 0.4rem 0.5rem;
+  text-decoration: none;
+  box-shadow: var(--shadow);
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.job-chip:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-lift);
+}
+
+.job-chip-logo {
+  width: 45px;
+  height: 45px;
+  object-fit: contain;
+  border-radius: 50%;
+  background: #ffffff;
+  padding: 4px;
+  border: 1px solid var(--hairline);
+  flex-shrink: 0;
+}
+
+.job-chip-title {
+  font-weight: 600;
+  font-size: 0.93rem;
+  color: var(--accent-deep);
+  line-height: 1.3;
+}
+
+.job-chip-icon {
+  position: absolute;
+  top: 0.45rem;
+  right: 0.6rem;
+}
 
 /* ---------- guides accordion ---------- */
 .accordion-panel h4 {
@@ -702,6 +771,11 @@ html {
 }
 
 .accordion-item:has(.accordion-button[aria-expanded="true"]) {
+  border-color: var(--accent);
+}
+
+/* Green outline hover, like the cards and pill buttons. */
+.accordion-item:hover {
   border-color: var(--accent);
 }
 
@@ -853,6 +927,17 @@ html {
   letter-spacing: -0.01em;
 }
 
+/* One-word brand, clickable to top. Overrides the generic footer text-link
+   rule so the brand stays ink, with only "Deaf" in brand green. */
+.footer-brand .footer-brand-link {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.footer-brand-link .brand-deaf { color: var(--accent-deep); }
+
+.footer-brand-link:hover .brand-deaf { color: var(--accent); }
+
 .footer-nav {
   display: flex;
   flex-wrap: wrap;
@@ -888,6 +973,8 @@ html {
 
 .footer-btn svg { flex-shrink: 0; }
 
+/* Full bar width, matching the header's content width, now that it sits
+   outside the centered footer-inner container. */
 .footer-bottom {
   display: flex;
   justify-content: space-between;
@@ -895,7 +982,7 @@ html {
   gap: 0.6rem 1.5rem;
   flex-wrap: wrap;
   border-top: 1px solid var(--hairline);
-  padding-top: 1.4rem;
+  padding: 1.4rem 1.5rem 0;
   text-align: left;
 }
 
@@ -910,7 +997,8 @@ html {
 }
 
 /* ---------- responsive ---------- */
-@media (max-width: 760px) {
+/* Nav collapses to the hamburger menu at tablet widths. */
+@media (max-width: 876px) {
   .nav-toggle { display: flex; }
 
   .site-nav {
@@ -932,7 +1020,9 @@ html {
   .site-nav a { padding: 0.7rem 0; border-top: 1px solid var(--hairline); }
   .site-nav a:first-child { border-top: 0; }
   .nav-cta { text-align: center; margin-top: 0.5rem; }
+}
 
+@media (max-width: 760px) {
   .hero { padding: 4rem 1.5rem 3.2rem; }
   .section { padding: 3.4rem 1.5rem; }
   .card-list { grid-template-columns: 1fr 1fr; gap: 0.9rem; }

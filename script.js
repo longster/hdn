@@ -76,17 +76,19 @@ function eventDateLabel(iso) {
   );
 })();
 
-// ---------- brand logo always scrolls to true top ----------
+// ---------- header + footer brands always scroll to true top ----------
 // The global scroll-padding-top offset keeps anchors clear of the sticky
 // header, but it also stops the logo link from landing at the real top.
 // Intercept the click and scroll to 0 explicitly.
 (function () {
-  const brand = document.querySelector(".brand");
-  if (!brand) return;
-  brand.addEventListener("click", function (e) {
-    e.preventDefault();
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+  const brands = document.querySelectorAll(".brand, .footer-brand-link");
+  if (!brands.length) return;
+  brands.forEach(function (brand) {
+    brand.addEventListener("click", function (e) {
+      e.preventDefault();
+      const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      window.scrollTo({ top: 0, behavior: reduce ? "auto" : "smooth" });
+    });
   });
 })();
 
@@ -111,9 +113,14 @@ var CATEGORY_ORDER = [
 var activeCategory = "All";
 var searchTerm = "";
 
-// External-link indicator (arrow-out-of-box), decorative. Every external
-// link opens in a new tab and names its destination + "opens in new tab".
-var EXT_ICON = '<svg class="ext-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h5v5"/><path d="M20 4 10.5 13.5"/><path d="M19 13.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5.5"/></svg>';
+// External-link indicator (arrow-out-of-box), decorative, 9px superscript
+// style. Every external link opens in a new tab and names its destination
+// + "opens in new tab".
+function extIcon(extraClass) {
+  return '<svg class="ext-icon' + (extraClass ? " " + extraClass : "") + '" viewBox="0 0 24 24" width="9" height="9" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h5v5"/><path d="M20 4 10.5 13.5"/><path d="M19 13.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5.5"/></svg>';
+}
+
+var EXT_ICON = extIcon();
 
 function extLink(href, label, text) {
   return '<a class="card-link" href="' + esc(href) + '" target="_blank" rel="noopener" aria-label="' + esc(label) + ', opens in new tab">' + esc(text) + " " + EXT_ICON + "</a>";
@@ -300,17 +307,16 @@ function renderEvents() {
 }
 
 // ---------- jobs ----------
+// Job boards render as compact whole-card link chips: thumbnail + title
+// in a horizontal row, with the external icon pinned to the upper right.
 function jobCard(j) {
+  if (!j.link) return "";
   return (
-    '<div class="dir-card job-card">' +
-    (j.logo ? '<img class="dir-logo" src="' + esc(j.logo) + '" alt="" loading="lazy" width="60" height="60">' : "") +
-    "<h3>" + esc(j.title) + "</h3>" +
-    '<div class="dir-foot">' +
-      (j.link
-        ? '<div class="card-links">' + extLink(j.link, "Visit " + j.title, "Visit") + "</div>"
-        : "") +
-    "</div>" +
-    "</div>"
+    '<a class="job-chip" href="' + esc(j.link) + '" target="_blank" rel="noopener" aria-label="Visit ' + esc(j.title) + ', opens in new tab">' +
+    (j.logo ? '<img class="job-chip-logo" src="' + esc(j.logo) + '" alt="" loading="lazy" width="45" height="45">' : "") +
+    '<span class="job-chip-title">' + esc(j.title) + "</span>" +
+    extIcon("job-chip-icon") +
+    "</a>"
   );
 }
 
