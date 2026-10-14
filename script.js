@@ -196,11 +196,16 @@ function updateSearchMeta() {
   var hasTerm = !!searchTerm;
   var active = hasFilter || hasTerm;
   meta.hidden = !active;
-  label.hidden = !hasFilter;
-  clear.hidden = !active;
-  if (hasFilter) {
-    label.innerHTML = 'Filtered by: <strong>' + esc(activeCategory) + "</strong>";
+  if (active) {
+    var bits = [];
+    if (hasFilter) bits.push("Filtered by: <strong>" + esc(activeCategory) + "</strong>");
+    if (hasTerm) bits.push("&ldquo;" + esc(searchTerm) + "&rdquo;");
+    label.innerHTML = bits.join(" &middot; ");
+    label.hidden = false;
+  } else {
+    label.hidden = true;
   }
+  clear.hidden = !active;
 }
 
 function clearSearchAndFilter() {
