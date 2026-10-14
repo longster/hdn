@@ -178,6 +178,7 @@ html {
   border: 1px solid var(--hairline);
   border-radius: 999px;
   font-weight: 600;
+  color: var(--accent-deep);
 }
 
 .nav-cta:hover { border-color: var(--accent); }
@@ -905,7 +906,7 @@ html {
 
 /* ---------- footer: full-width bar, centered content ---------- */
 .site-footer {
-  background: var(--surface-soft);
+  background: var(--bg);
   border-top: 1px solid var(--hairline);
   padding: 3rem 1.5rem 2.2rem;
   color: var(--muted);
@@ -922,6 +923,7 @@ html {
 
 .footer-brand strong {
   font-family: var(--font-display);
+  font-weight: 600;
   color: var(--ink);
   font-size: 1.3rem;
   letter-spacing: -0.01em;
