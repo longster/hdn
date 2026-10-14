@@ -514,6 +514,23 @@ html {
   transition: border-color 0.2s ease, background 0.2s ease;
 }
 
+/* Icon-only card buttons: circular 44px touch targets, brand glyph centered.
+   Text lives in the title tooltip and aria-label. */
+.card-link-icon {
+  width: 44px;
+  height: 44px;
+  min-height: 44px;
+  padding: 0;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.brand-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+}
+
 /* External-link indicator: small superscript-style marker, decorative. */
 .ext-icon {
   flex-shrink: 0;
