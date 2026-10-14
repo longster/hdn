@@ -650,6 +650,18 @@ html {
   gap: 0.15rem 1.15rem;
 }
 
+/* Compact link-sized options: no button box, minimal line height. */
+.filter-tag {
+  font: inherit;
+  font-size: 0.9rem;
+  background: none;
+  border: 0;
+  padding: 0.15rem 0.1rem;
+  color: var(--accent-deep);
+  cursor: pointer;
+  line-height: 1.5;
+}
+
 .filter-tag:hover { text-decoration: underline; text-underline-offset: 3px; }
 
 .filter-tag[aria-pressed="true"] {
