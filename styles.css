@@ -178,6 +178,10 @@ html {
   border: 1px solid var(--hairline);
   border-radius: 999px;
   font-weight: 600;
+}
+
+/* Higher specificity than .site-nav a so the green text wins. */
+.site-nav a.nav-cta {
   color: var(--accent-deep);
 }
 
