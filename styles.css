@@ -962,3 +962,21 @@ html {
   outline: 2px solid var(--accent);
   outline-offset: 3px;
 }
+
+/* Inline text links (e.g. the Long Duong name link): brand teal, never browser-default blue. */
+.lede a,
+.site-footer p a {
+  color: var(--accent-deep);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1.5px;
+}
+.lede a:hover,
+.site-footer p a:hover {
+  color: var(--accent);
+}
+.lede a:visited,
+.site-footer p a:visited {
+  color: var(--accent-deep);
+}
