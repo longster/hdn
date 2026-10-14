@@ -1058,6 +1058,7 @@ html {
   .site-nav a { padding: 0.7rem 0; border-top: 1px solid var(--hairline); }
   .site-nav a:first-child { border-top: 0; }
   .nav-cta { text-align: center; margin-top: 0.5rem; }
+  .site-nav .theme-toggle { align-self: flex-start; margin-top: 0.75rem; }
 }
 
 @media (max-width: 760px) {
