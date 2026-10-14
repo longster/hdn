@@ -1061,6 +1061,7 @@ html {
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1.5px;
+  white-space: nowrap; /* keep the name and its external icon on one line */
 }
 .lede a:hover,
 .site-footer p a:hover {
