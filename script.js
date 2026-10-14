@@ -59,15 +59,20 @@ function eventDateLabel(iso) {
   const toggle = document.querySelector(".nav-toggle");
   const nav = document.querySelector(".site-nav");
   if (!toggle || !nav) return;
+  function close(returnFocus) {
+    nav.classList.remove("open");
+    toggle.setAttribute("aria-expanded", "false");
+    if (returnFocus) toggle.focus();
+  }
   toggle.addEventListener("click", () => {
     const open = nav.classList.toggle("open");
     toggle.setAttribute("aria-expanded", String(open));
   });
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && nav.classList.contains("open")) close(true);
+  });
   nav.querySelectorAll("a").forEach((a) =>
-    a.addEventListener("click", () => {
-      nav.classList.remove("open");
-      toggle.setAttribute("aria-expanded", "false");
-    })
+    a.addEventListener("click", () => close(false))
   );
 })();
 
@@ -106,6 +111,14 @@ var CATEGORY_ORDER = [
 var activeCategory = "All";
 var searchTerm = "";
 
+// External-link indicator (arrow-out-of-box), decorative. Every external
+// link opens in a new tab and names its destination + "opens in new tab".
+var EXT_ICON = '<svg class="ext-icon" viewBox="0 0 24 24" width="12" height="12" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 4h5v5"/><path d="M20 4 10.5 13.5"/><path d="M19 13.5V19a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5.5"/></svg>';
+
+function extLink(href, label, text) {
+  return '<a class="card-link" href="' + esc(href) + '" target="_blank" rel="noopener" aria-label="' + esc(label) + ', opens in new tab">' + esc(text) + " " + EXT_ICON + "</a>";
+}
+
 function directoryRows() {
   if (typeof SITE_DATA === "undefined") return [];
   return SITE_DATA.directory.filter(function (r) {
@@ -122,9 +135,10 @@ function socialRows() {
 
 function linkButtons(r) {
   var links = [];
-  if (r.website) links.push('<a class="card-link" href="' + esc(r.website) + '">Website</a>');
-  if (r.facebook) links.push('<a class="card-link" href="' + esc(r.facebook) + '">Facebook</a>');
-  if (r.linkedin) links.push('<a class="card-link" href="' + esc(r.linkedin) + '">LinkedIn</a>');
+  if (r.website) links.push(extLink(r.website, "Website for " + r.name, "Website"));
+  if (r.facebook) links.push(extLink(r.facebook, "Facebook for " + r.name, "Facebook"));
+  if (r.instagram) links.push(extLink(r.instagram, "Instagram for " + r.name, "Instagram"));
+  if (r.linkedin) links.push(extLink(r.linkedin, "LinkedIn for " + r.name, "LinkedIn"));
   if (!links.length) return "";
   return '<div class="card-links">' + links.join("") + "</div>";
 }
@@ -159,12 +173,42 @@ function renderDirectory() {
   });
   grid.innerHTML = rows.map(dirCard).join("");
   var total = directoryRows().length;
-  if (count) count.textContent = rows.length + " of " + total;
+  if (count) count.textContent = rows.length + " of " + total + " listings";
   if (empty) empty.hidden = rows.length > 0;
+  updateSearchMeta();
+}
+
+// Shows the active filter and the Clear control only when a search term
+// or a category filter is active.
+function updateSearchMeta() {
+  var meta = document.getElementById("search-meta");
+  var label = document.getElementById("active-filter");
+  var clear = document.getElementById("search-clear");
+  if (!meta || !label || !clear) return;
+  var hasFilter = activeCategory !== "All";
+  var hasTerm = !!searchTerm;
+  var active = hasFilter || hasTerm;
+  meta.hidden = !active;
+  label.hidden = !hasFilter;
+  clear.hidden = !active;
+  if (hasFilter) {
+    label.innerHTML = 'Filtered by: <strong>' + esc(activeCategory) + "</strong>";
+  }
+}
+
+function clearSearchAndFilter() {
+  searchTerm = "";
+  activeCategory = "All";
+  var search = document.getElementById("directory-search");
+  if (search) search.value = "";
+  document.querySelectorAll(".filter-tag").forEach(function (b) {
+    b.setAttribute("aria-pressed", String(b.getAttribute("data-category") === "All"));
+  });
+  renderDirectory();
 }
 
 function renderFilterTags() {
-  var wrap = document.getElementById("category-chips");
+  var wrap = document.getElementById("category-tags");
   if (!wrap || typeof SITE_DATA === "undefined") return;
   var present = {};
   directoryRows().forEach(function (r) {
@@ -247,7 +291,7 @@ function renderEvents() {
         (e.location ? '<p class="event-location">' + esc(e.location) + "</p>" : "") +
         (e.description ? '<p class="dir-desc">' + esc(e.description) + "</p>" : "") +
         (e.link
-          ? '<div class="dir-foot"><div class="card-links"><a class="card-link" href="' + esc(e.link) + '">More info</a></div></div>'
+          ? '<div class="dir-foot"><div class="card-links">' + extLink(e.link, "More info for " + e.name, "More info") + "</div></div>"
           : "") +
         "</div>"
       );
@@ -263,7 +307,7 @@ function jobCard(j) {
     "<h3>" + esc(j.title) + "</h3>" +
     '<div class="dir-foot">' +
       (j.link
-        ? '<div class="card-links"><a class="card-link" href="' + esc(j.link) + '">Visit</a></div>'
+        ? '<div class="card-links">' + extLink(j.link, "Visit " + j.title, "Visit") + "</div>"
         : "") +
     "</div>" +
     "</div>"
@@ -297,9 +341,9 @@ function accordionItem(prefix, i, title, panelHtml) {
   var panelId = prefix + "-panel-" + i;
   return (
     '<div class="accordion-item">' +
-    '<button type="button" class="accordion-button" id="' + btnId + '" aria-expanded="false" aria-controls="' + panelId + '">' +
+    '<h3 class="accordion-heading"><button type="button" class="accordion-button" id="' + btnId + '" aria-expanded="false" aria-controls="' + panelId + '">' +
     "<span>" + esc(title) + '</span><span class="accordion-icon" aria-hidden="true"><span class="ai-bar ai-bar-h"></span><span class="ai-bar ai-bar-v"></span></span>' +
-    "</button>" +
+    "</button></h3>" +
     '<div class="accordion-panel" id="' + panelId + '" role="region" aria-labelledby="' + btnId + '" hidden>' +
     panelHtml +
     "</div></div>"
@@ -355,8 +399,14 @@ function renderFaq() {
   const form = document.getElementById("contact-form");
   if (!form) return;
   const status = form.querySelector(".form-status");
+  const submitBtn = form.querySelector('button[type="submit"]');
+  const submitLabel = submitBtn ? submitBtn.textContent : "";
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Sending...";
+    }
     status.textContent = "Sending...";
     try {
       const res = await fetch(form.action, {
@@ -370,6 +420,11 @@ function renderFaq() {
     } catch (err) {
       status.textContent =
         "Something went wrong. Please try again in a bit.";
+    } finally {
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = submitLabel;
+      }
     }
   });
 })();
@@ -385,11 +440,19 @@ renderFaq();
 
 (function () {
   const search = document.getElementById("directory-search");
+  const clearBtn = document.getElementById("search-clear");
+  var debounceTimer = null;
   if (search) {
     search.addEventListener("input", function () {
-      searchTerm = search.value.trim().toLowerCase();
-      renderDirectory();
+      // Debounced so the live region announces once typing pauses,
+      // not on every keystroke.
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(function () {
+        searchTerm = search.value.trim().toLowerCase();
+        renderDirectory();
+      }, 250);
     });
   }
+  if (clearBtn) clearBtn.addEventListener("click", clearSearchAndFilter);
 })();
 
