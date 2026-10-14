@@ -523,7 +523,8 @@ html {
 
 /* Superscript position next to inline text links. */
 .lede a .ext-icon,
-.site-footer p a .ext-icon {
+.site-footer p a .ext-icon,
+.accordion-panel p a .ext-icon {
   vertical-align: super;
   margin-left: 0.22em;
 }
@@ -608,6 +609,7 @@ html {
   align-items: center;
   gap: 0.3rem 0.8rem;
   margin-top: 0.7rem;
+  margin-bottom: 1.4rem;
   font-size: 0.9rem;
   color: var(--muted);
 }
@@ -618,7 +620,7 @@ html {
 
 .active-filter strong { color: var(--ink); }
 
-.meta-count { margin: 0; font-size: 0.9rem; color: var(--muted); }
+.meta-count { margin: 0 0 0 auto; font-size: 0.9rem; color: var(--muted); }
 
 /* Icon-only reset control: subtle × that doesn't compete with the filter tags. */
 .search-clear-icon {
@@ -1074,7 +1076,8 @@ html {
 
 /* Inline text links (e.g. the Long Duong name link): brand teal, never browser-default blue. */
 .lede a,
-.site-footer p a {
+.site-footer p a,
+.accordion-panel p a {
   color: var(--accent-deep);
   font-weight: 600;
   text-decoration: underline;
@@ -1083,10 +1086,12 @@ html {
   white-space: nowrap; /* keep the name and its external icon on one line */
 }
 .lede a:hover,
-.site-footer p a:hover {
+.site-footer p a:hover,
+.accordion-panel p a:hover {
   color: var(--accent);
 }
 .lede a:visited,
-.site-footer p a:visited {
+.site-footer p a:visited,
+.accordion-panel p a:visited {
   color: var(--accent-deep);
 }
