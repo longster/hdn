@@ -162,7 +162,7 @@ html {
 .theme-toggle[data-state="light"] .tt-sun { display: block; }
 .theme-toggle[data-state="dark"] .tt-moon { display: block; }
 
-.site-nav { display: flex; align-items: center; gap: 1.35rem; }
+.site-nav { display: flex; align-items: center; gap: 1.35rem; margin-left: auto; }
 
 .site-nav a {
   color: var(--body);
@@ -1058,7 +1058,9 @@ html {
   .site-nav a { padding: 0.7rem 0; border-top: 1px solid var(--hairline); }
   .site-nav a:first-child { border-top: 0; }
   .nav-cta { text-align: center; margin-top: 0.5rem; }
-  .site-nav .theme-toggle { align-self: flex-start; margin-top: 0.75rem; }
+
+  /* Theme toggle stays in the header on mobile, next to the hamburger. */
+  .site-header .theme-toggle { margin-left: auto; }
 }
 
 @media (max-width: 760px) {
