@@ -163,11 +163,16 @@ function linkButtons(r) {
   return '<div class="card-links">' + links.join("") + "</div>";
 }
 
+// Fallback logo for listings without one: the HDN mark, same file the
+// header uses on light backgrounds. Card logos sit on white in both
+// themes, so the dark mark works everywhere.
+var FALLBACK_LOGO = "assets/hdn-logo-favicon-dark.png";
+
 function dirCard(r) {
   var links = linkButtons(r);
   return (
     '<li class="dir-card">' +
-    (r.logo ? '<img class="dir-logo" src="' + esc(r.logo) + '" alt="" loading="lazy" width="60" height="60">' : "") +
+    '<img class="dir-logo" src="' + esc(r.logo || FALLBACK_LOGO) + '" alt="" loading="lazy" width="60" height="60">' +
     (r.category ? '<p class="dir-eyebrow">' + esc(r.category) + "</p>" : "") +
     "<h3>" + esc(r.name) + "</h3>" +
     (r.description ? '<p class="dir-desc">' + esc(r.description) + "</p>" : "") +
@@ -331,7 +336,7 @@ function jobCard(j) {
   if (!j.link) return "";
   return (
     '<a class="job-chip" href="' + esc(j.link) + '" target="_blank" rel="noopener" aria-label="Visit ' + esc(j.title) + ', opens in new tab">' +
-    (j.logo ? '<img class="job-chip-logo" src="' + esc(j.logo) + '" alt="" loading="lazy" width="45" height="45">' : "") +
+    '<img class="job-chip-logo" src="' + esc(j.logo || FALLBACK_LOGO) + '" alt="" loading="lazy" width="45" height="45">' +
     '<span class="job-chip-title">' + esc(j.title) + "</span>" +
     extIcon("job-chip-icon") +
     "</a>"
