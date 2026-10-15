@@ -1,0 +1,44 @@
+# HDN Notion sync: rebuild data.js from Approved Notion rows.
+# Runs daily plus on demand. Commits data.js only when content changed.
+# Required repo secrets (Settings > Secrets and variables > Actions):
+#   NOTION_TOKEN, DATABASE_ID_DIRECTORY, DATABASE_ID_EVENTS,
+#   DATABASE_ID_JOBS, DATABASE_ID_FAQ
+
+name: HDN Notion sync
+
+on:
+  # 12:00 UTC = 6:00 AM Central in standard time, 7:00 AM in daylight time.
+  schedule:
+    - cron: "0 12 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Sync data.js from Notion
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          DATABASE_ID_DIRECTORY: ${{ secrets.DATABASE_ID_DIRECTORY }}
+          DATABASE_ID_EVENTS: ${{ secrets.DATABASE_ID_EVENTS }}
+          DATABASE_ID_JOBS: ${{ secrets.DATABASE_ID_JOBS }}
+          DATABASE_ID_FAQ: ${{ secrets.DATABASE_ID_FAQ }}
+        run: node automation/sync.mjs data.js
+      - name: Commit data.js if changed
+        run: |
+          if git diff --quiet -- data.js; then
+            echo "No changes."
+          else
+            git config user.name "HDN Notion sync"
+            git config user.email "actions@github.com"
+            git add data.js
+            git commit -m "Sync data.js from Notion"
+            git push
+          fi
