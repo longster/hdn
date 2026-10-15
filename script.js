@@ -422,7 +422,9 @@ function renderFaq() {
   bindAccordion(list);
 }
 
-// ---------- contact form via FormSubmit ajax ----------
+// ---------- contact form via Cloudflare Worker -> Notion ----------
+// Fallback: if the Worker is ever down, swap form.action back to the
+// FormSubmit URL (see git history) and this handler works unchanged.
 (function () {
   const form = document.getElementById("contact-form");
   if (!form) return;
