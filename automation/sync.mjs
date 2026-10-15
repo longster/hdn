@@ -19,7 +19,9 @@
 //   Events: Name (title), Date (date), Location (rich_text),
 //     Description (rich_text), Link (url), Source (rich_text),
 //     Status (select: Upcoming / Past / Cancelled).
-//   Jobs (postings only; the 16 job-board chips stay curated in data.js):
+//   Jobs (the 16 job-board chips live in this DB too, but they stay
+//     curated in data.js; the sync skips any row whose title matches
+//     a chip and publishes only other Active rows as postings):
 //     Title (title), Organization (rich_text), Description
 //     (rich_text), Link (url), Expiry date (date),
 //     Status (select: Active / Expired / Filled).
@@ -188,6 +190,15 @@ function byName(a, b) {
   return a.name.localeCompare(b.name);
 }
 
+function isInstagramUrl(u) {
+  if (!u) return false;
+  try {
+    return new URL(u).hostname.replace(/^www\./, "") === "instagram.com";
+  } catch {
+    return false;
+  }
+}
+
 async function main() {
   const dataPath = process.argv[2] || "./data.js";
   const src = readFileSync(dataPath, "utf8");
@@ -221,13 +232,22 @@ async function main() {
     const instagram = ("Instagram" in dirSchema.props)
       ? readUrl(page, "Instagram")
       : (oldRecord?.instagram || "");
+    // A Website URL pointing at Instagram is an Instagram link, not a
+    // website (e.g. Best Street Tacos). Move it so the site never
+    // renders a Website button that goes to Instagram.
+    let website = readUrl(page, m.website);
+    let ig = instagram;
+    if (isInstagramUrl(website)) {
+      if (!ig) ig = website;
+      website = "";
+    }
     directory.push({
       name,
       category: readSelect(page, m.category),
       description: readText(page, m.description),
-      website: readUrl(page, m.website),
+      website,
       facebook: readUrl(page, m.facebook),
-      instagram,
+      instagram: ig,
       linkedin: readUrl(page, m.linkedin),
       verified: readDate(page, m.verified) || oldVerified || today,
       logo,
@@ -269,10 +289,15 @@ async function main() {
   }
   const jobRows = await queryByStatus(jobDb, MAP.jobs.status, "Active");
   const postings = [];
+  // The Jobs DB holds the curated job-board chips, not postings. A row
+  // whose title matches a chip is a board, never a posting; only other
+  // Active rows publish as postings.
+  const boardTitles = new Set((old.jobs || []).map((j) => j.title));
   for (const page of jobRows) {
     const m = MAP.jobs;
     const title = readTitle(page, jobSchema);
     if (!title) continue;
+    if (boardTitles.has(title)) continue;
     const org = readText(page, m.organization);
     // Jobs has no Logo property in Notion; keep the previous data.js
     // logo for this posting, if any.
