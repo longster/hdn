@@ -172,11 +172,11 @@
       <p class="eyebrow">Contribute</p>
       <h2 id="get-listed-heading">Get listed</h2>
       <p>Submit a business, event, job opening, or resource, suggest a correction, or just ask a question. It all comes to me through this one form.</p>
-      <!-- FormSubmit mirrors the current live site: submissions go to the project's inbox.
-           The first submission triggers a confirmation email to that address, approve it once.
-           To keep the address out of page source, swap the email in the action below for the
-           FormSubmit alias (formsubmit.co/ajax/el/xxxxxx) from the activation email. -->
-      <form class="contact-form" id="contact-form" action="https://formsubmit.co/ajax/info@houstondeafnetwork.com" method="POST">
+      <!-- Submissions go to the Cloudflare Worker, which writes a Pending row to Notion.
+           Fallback: if the Worker is ever down, swap the action below back to the
+           FormSubmit URL (see git history) and the handler works unchanged. -->
+      <form class="contact-form" id="contact-form" action="https://hdn-form-intake.longster.workers.dev/" method="POST">
+        <label class="hp-field" aria-hidden="true">Company<input type="text" name="company" tabindex="-1" autocomplete="off"></label>
         <label>Your name<input type="text" name="name" required autocomplete="name"></label>
         <label>Email<input type="email" name="email" required autocomplete="email"></label>
         <label>What are you submitting?
@@ -192,7 +192,6 @@
           </select>
         </label>
         <label>Details<textarea name="message" rows="5" required placeholder="Name, description, date and location for events, link, and anything else I should know."></textarea></label>
-        <input type="hidden" name="_subject" value="New HDN website submission">
         <button class="btn btn-primary" type="submit">Send submission</button>
         <p class="form-microcopy">I review every submission personally. Listings are free, and I only publish what serves the community.</p>
         <p class="form-status" role="status" aria-live="polite"></p>
