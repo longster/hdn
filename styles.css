@@ -881,6 +881,16 @@ html {
 /* ---------- contact form ---------- */
 .contact-form { display: grid; gap: 1.05rem; }
 
+/* Honeypot: visually hidden but NOT display:none, so bots still see it.
+   Screen readers skip it via aria-hidden + tabindex="-1". */
+.hp-field {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .contact-form label {
   display: grid;
   gap: 0.4rem;
