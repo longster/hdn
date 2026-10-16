@@ -39,7 +39,7 @@
   <script>
   (function(){try{var t=localStorage.getItem('hdn-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
   </script>
-  <link rel="stylesheet" href="styles.css?v=18">
+  <link rel="stylesheet" href="styles.css?v=19">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -70,16 +70,20 @@
 
   <main id="main-content">
     <section class="hero" aria-labelledby="hero-heading">
-      <div class="wave-field" aria-hidden="true">
-        <svg viewBox="0 0 1200 140" preserveAspectRatio="xMidYMid slice" focusable="false">
-          <defs>
-            <path id="wavePath" d="M-40,70 C0,46 40,94 80,70 C120,46 160,94 200,70 C240,46 280,94 320,70 C360,46 400,94 440,70 C480,46 520,94 560,70 C600,46 640,94 680,70 C720,46 760,94 800,70 C840,46 880,94 920,70 C960,46 1000,94 1040,70 C1080,46 1120,94 1160,70 C1200,46 1240,94 1280,70" fill="none"/>
-          </defs>
-          <g class="wave-drift" stroke="currentColor" stroke-width="2" fill="none">
-            <use href="#wavePath" y="-34" opacity="0.5"/>
-            <use href="#wavePath" y="-8" opacity="0.32"/>
-            <use href="#wavePath" y="18" opacity="0.2"/>
-            <use href="#wavePath" y="42" opacity="0.12"/>
+      <div class="hero-scene" aria-hidden="true">
+        <div class="aurora"></div>
+        <svg class="bayou-lines" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round">
+            <!-- Buffalo Bayou, main stem west to east -->
+            <path d="M-40,120 C150,100 220,150 350,130 C480,110 560,150 700,130 C840,110 950,140 1080,120 C1150,112 1200,118 1240,110" opacity="0.5"/>
+            <!-- White Oak Bayou, joining from the northwest -->
+            <path d="M180,-20 C240,40 300,70 380,100 C420,112 450,118 480,122" opacity="0.32"/>
+            <!-- Brays Bayou, south -->
+            <path d="M60,220 C220,200 380,210 520,190 C680,168 820,180 980,160 C1100,146 1180,140 1240,132" opacity="0.25"/>
+            <!-- Sims Bayou, far south -->
+            <path d="M300,240 C450,225 600,230 760,210 C900,192 1050,196 1240,170" opacity="0.18"/>
+            <!-- Greens Bayou, joining from the northeast -->
+            <path d="M980,-20 C1000,40 1060,80 1100,105 C1130,122 1160,126 1190,128" opacity="0.2"/>
           </g>
         </svg>
       </div>

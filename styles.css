@@ -1,5 +1,5 @@
 /* Houston Deaf Network, round four revisions.
-   Montserrat display + Inter body, sound-wave motif, unified full-width sections.
+   Montserrat display + Inter body, bayou linework + aurora hero, unified full-width sections.
    Theme: 3-state manual toggle (auto/light/dark, persisted in localStorage),
    defaulting to auto which follows the visitor's OS preference. */
 
@@ -23,7 +23,10 @@
   --radius-lg: 20px;
   --font-body: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   --font-display: "Montserrat", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-  --wave-stroke: #0e7d5f;
+  --bayou-stroke: #0e7d5f;
+  --aurora-green: rgba(14, 125, 95, 0.16);
+  --aurora-amber: rgba(154, 97, 6, 0.10);
+  --aurora-teal: rgba(47, 212, 159, 0.10);
 }
 
 /* Explicit dark choice, or dark OS with no explicit light choice. */
@@ -42,7 +45,10 @@
   --header-bg: rgba(13, 14, 16, 0.9);
   --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
   --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 14px 34px rgba(0, 0, 0, 0.45);
-  --wave-stroke: #2fd49f;
+  --bayou-stroke: #2fd49f;
+  --aurora-green: rgba(47, 212, 159, 0.22);
+  --aurora-amber: rgba(242, 183, 60, 0.13);
+  --aurora-teal: rgba(47, 212, 159, 0.14);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -61,7 +67,10 @@
     --header-bg: rgba(13, 14, 16, 0.9);
     --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 8px 24px rgba(0, 0, 0, 0.35);
     --shadow-lift: 0 2px 4px rgba(0, 0, 0, 0.35), 0 14px 34px rgba(0, 0, 0, 0.45);
-    --wave-stroke: #2fd49f;
+    --bayou-stroke: #2fd49f;
+  --aurora-green: rgba(47, 212, 159, 0.22);
+  --aurora-amber: rgba(242, 183, 60, 0.13);
+  --aurora-teal: rgba(47, 212, 159, 0.14);
   }
 }
 
@@ -71,7 +80,7 @@ html { scroll-behavior: smooth; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  .wave-drift, .wave-field use { animation: none !important; }
+  .aurora { animation: none !important; }
   .goal-card, .dir-card { transition: none !important; }
   .accordion-icon, .ai-bar, .theme-toggle, .goal-card-arrow,
   .filter-toggle, .card-link, .btn-primary, .job-chip { transition: none !important; }
@@ -215,45 +224,42 @@ html {
   padding: 5.5rem 1.5rem 4.5rem;
 }
 
-.wave-field {
+/* Hero scene: aurora glow behind stylized Houston bayou linework.
+   The bayou paths are evocative, not geographically exact. Aurora stays
+   barely-there so the headline keeps full contrast; linework is the star. */
+.hero-scene {
   position: absolute;
   inset: 0;
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  color: var(--wave-stroke);
-  opacity: 0.5;
   pointer-events: none;
   mask-image: linear-gradient(to bottom, black 0%, transparent 78%);
   -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 78%);
 }
 
-.wave-field svg {
+.aurora {
+  position: absolute;
+  inset: -12%;
+  background:
+    radial-gradient(circle at 18% 28%, var(--aurora-green), transparent 58%),
+    radial-gradient(circle at 82% 18%, var(--aurora-amber), transparent 52%),
+    radial-gradient(circle at 62% 92%, var(--aurora-teal), transparent 60%);
+  animation: aurora-drift 26s ease-in-out infinite alternate;
+}
+
+@keyframes aurora-drift {
+  from { transform: translateX(-28px) scale(1); }
+  to { transform: translateX(28px) scale(1.08); }
+}
+
+.bayou-lines {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
   width: 1400px;
   max-width: none;
   height: 220px;
-}
-
-.wave-drift {
-  animation: wave-drift 18s ease-in-out infinite alternate;
-}
-
-@keyframes wave-drift {
-  from { transform: translateX(0); }
-  to { transform: translateX(-72px); }
-}
-
-/* Per-row vertical bob at staggered speeds: layered ripple feel. */
-.wave-field use {
-  animation: wave-bob 7s ease-in-out infinite alternate;
-}
-.wave-field use:nth-child(2) { animation-duration: 9.5s; }
-.wave-field use:nth-child(3) { animation-duration: 12s; }
-.wave-field use:nth-child(4) { animation-duration: 14.5s; }
-
-@keyframes wave-bob {
-  from { transform: translateY(0); }
-  to { transform: translateY(-10px); }
+  color: var(--bayou-stroke);
+  opacity: 0.42;
 }
 
 .hero-inner {
