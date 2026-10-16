@@ -231,8 +231,8 @@ html {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  mask-image: linear-gradient(to bottom, black 0%, transparent 78%);
-  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 78%);
+  mask-image: linear-gradient(to bottom, black 0%, transparent 96%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, transparent 96%);
 }
 
 .aurora {
@@ -252,12 +252,9 @@ html {
 
 .node-net {
   position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 1400px;
-  max-width: none;
-  height: 220px;
+  inset: 0;
+  width: 100%;
+  height: 100%;
   color: var(--node-stroke);
   opacity: 0.42;
 }
