@@ -39,7 +39,7 @@
   <script>
   (function(){try{var t=localStorage.getItem('hdn-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
   </script>
-  <link rel="stylesheet" href="styles.css?v=19">
+  <link rel="stylesheet" href="styles.css?v=20">
 </head>
 <body>
   <a class="skip-link" href="#main-content">Skip to content</a>
@@ -72,18 +72,34 @@
     <section class="hero" aria-labelledby="hero-heading">
       <div class="hero-scene" aria-hidden="true">
         <div class="aurora"></div>
-        <svg class="bayou-lines" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMid slice" focusable="false">
-          <g stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round">
-            <!-- Buffalo Bayou, main stem west to east -->
-            <path d="M-40,120 C150,100 220,150 350,130 C480,110 560,150 700,130 C840,110 950,140 1080,120 C1150,112 1200,118 1240,110" opacity="0.5"/>
-            <!-- White Oak Bayou, joining from the northwest -->
-            <path d="M180,-20 C240,40 300,70 380,100 C420,112 450,118 480,122" opacity="0.32"/>
-            <!-- Brays Bayou, south -->
-            <path d="M60,220 C220,200 380,210 520,190 C680,168 820,180 980,160 C1100,146 1180,140 1240,132" opacity="0.25"/>
-            <!-- Sims Bayou, far south -->
-            <path d="M300,240 C450,225 600,230 760,210 C900,192 1050,196 1240,170" opacity="0.18"/>
-            <!-- Greens Bayou, joining from the northeast -->
-            <path d="M980,-20 C1000,40 1060,80 1100,105 C1130,122 1160,126 1190,128" opacity="0.2"/>
+        <svg class="node-net" viewBox="0 0 1200 220" preserveAspectRatio="xMidYMid slice" focusable="false">
+          <g stroke="currentColor" stroke-width="1.5" fill="none" opacity="0.28">
+            <path d="M60,60 L140,110 M60,60 L150,30 M150,30 L230,70 M140,110 L230,70 M230,70 L280,140 M140,110 L280,140"/>
+            <path d="M280,140 L350,50 M350,50 L420,110 M350,50 L520,60 M420,110 L480,160 M480,160 L520,60"/>
+            <path d="M520,60 L600,120 M520,60 L660,40 M600,120 L720,150 M660,40 L800,90 M720,150 L800,90"/>
+            <path d="M800,90 L920,60 M720,150 L870,170 M870,170 L920,60 M920,60 L1000,120 M920,60 L1080,50"/>
+            <path d="M1000,120 L1140,130 M1080,50 L1140,130 M1080,50 L1180,80 M1140,130 L1180,80"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="60" cy="60" r="4" opacity="0.5"/>
+            <circle cx="150" cy="30" r="3" opacity="0.45"/>
+            <circle cx="140" cy="110" r="5" opacity="0.55"/>
+            <circle cx="230" cy="70" r="3" opacity="0.45"/>
+            <circle cx="280" cy="140" r="4" opacity="0.5"/>
+            <circle cx="350" cy="50" r="5" opacity="0.55"/>
+            <circle cx="420" cy="110" r="3" opacity="0.45"/>
+            <circle cx="480" cy="160" r="4" opacity="0.5"/>
+            <circle cx="520" cy="60" r="6" opacity="0.65"/>
+            <circle cx="600" cy="120" r="3" opacity="0.45"/>
+            <circle cx="660" cy="40" r="4" opacity="0.5"/>
+            <circle cx="720" cy="150" r="5" opacity="0.55"/>
+            <circle cx="800" cy="90" r="3" opacity="0.45"/>
+            <circle cx="870" cy="170" r="4" opacity="0.5"/>
+            <circle cx="920" cy="60" r="6" opacity="0.65"/>
+            <circle cx="1000" cy="120" r="3" opacity="0.45"/>
+            <circle cx="1080" cy="50" r="4" opacity="0.5"/>
+            <circle cx="1140" cy="130" r="5" opacity="0.55"/>
+            <circle cx="1180" cy="80" r="3" opacity="0.45"/>
           </g>
         </svg>
       </div>
