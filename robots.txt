@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://longster.github.io/hdn/sitemap.xml
+Sitemap: https://houstondeafnetwork.com/sitemap.xml
