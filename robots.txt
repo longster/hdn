@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://longster.github.io/hdn/sitemap.xml
