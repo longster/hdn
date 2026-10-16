@@ -106,6 +106,7 @@ var CATEGORY_ORDER = [
   "Education & Career",
   "Health & Wellness",
   "Deaf-Owned Business",
+  "Deaf-Friendly Business",
   "Deaf-Friendly Employers",
   "Social & Meetup",
 ];
