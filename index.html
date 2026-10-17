@@ -44,21 +44,26 @@
   <script>
   (function(){try{var t=localStorage.getItem('hdn-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();
   </script>
-  <!-- Google Analytics (GA4) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-198W2N90W5"></script>
+  <!-- Google Analytics (GA4) + Microsoft Clarity, loaded 2s after window load so analytics never compete with first paint -->
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
     gtag('config', 'G-198W2N90W5');
-  </script>
-  <!-- Microsoft Clarity -->
-  <script type="text/javascript">
-    (function(c,l,a,r,i,t,y){
-      c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-      t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-      y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-    })(window, document, "clarity", "script", "u0vbyoolj8");
+    function loadAnalytics() {
+      if (window.__hdnAnalyticsLoaded) return;
+      window.__hdnAnalyticsLoaded = true;
+      var ga = document.createElement('script');
+      ga.async = true;
+      ga.src = 'https://www.googletagmanager.com/gtag/js?id=G-198W2N90W5';
+      document.head.appendChild(ga);
+      (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+      })(window, document, "clarity", "script", "u0vbyoolj8");
+    }
+    window.addEventListener('load', function(){ setTimeout(loadAnalytics, 2000); });
   </script>
   <link rel="stylesheet" href="styles.css?v=28">
 </head>
