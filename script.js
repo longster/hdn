@@ -171,11 +171,21 @@ var FALLBACK_LOGO = "assets/hdn-logo-favicon-dark.png";
 
 function dirCard(r) {
   var links = linkButtons(r);
+  // Primary link for the stretched card: website first, then socials.
+  // The title anchors it and CSS stretches its tap area over the card;
+  // the icon buttons sit above that layer and keep their own targets.
+  var primary = r.website || r.facebook || r.instagram || r.linkedin;
+  var title = esc(r.name);
+  if (primary) {
+    title = '<a class="card-hit" href="' + esc(primary) + '" target="_blank" rel="noopener">' +
+      esc(r.name) + " " + EXT_ICON +
+      '<span class="visually-hidden">, opens in new tab</span></a>';
+  }
   return (
-    '<li class="dir-card">' +
+    '<li class="dir-card' + (primary ? " is-link" : "") + '">' +
     '<img class="dir-logo" src="' + esc(r.logo || FALLBACK_LOGO) + '" alt="" loading="lazy" width="60" height="60">' +
     (r.category ? '<p class="dir-eyebrow">' + esc(r.category) + "</p>" : "") +
-    "<h3>" + esc(r.name) + "</h3>" +
+    "<h3>" + title + "</h3>" +
     (r.description ? '<p class="dir-desc">' + esc(r.description) + "</p>" : "") +
     (links ? '<div class="dir-foot">' + links + "</div>" : "") +
     "</li>"
