@@ -370,6 +370,10 @@ html {
 
 .goal-card:hover .goal-card-arrow { transform: translateY(5px); }
 
+/* Title text goes green on hover/focus, marking the card as interactive. */
+.goal-card:hover .goal-card-title,
+.goal-card:focus-visible .goal-card-title { color: var(--accent-deep); }
+
 .goal-card-arrow svg { width: 100%; height: 100%; }
 
 /* ---------- sections ---------- */
@@ -469,12 +473,6 @@ html {
 .card-hit:focus { outline: none; }
 
 .dir-card.is-link:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
-
-/* External mark appears on hover/focus so the title reads as a link */
-.card-hit .ext-icon { opacity: 0; }
-
-.dir-card.is-link:hover .card-hit .ext-icon,
-.dir-card.is-link:focus-within .card-hit .ext-icon { opacity: 1; }
 
 /* Icon buttons sit above the stretched link and keep their own targets */
 .dir-card .card-links a { position: relative; z-index: 2; }
@@ -583,7 +581,8 @@ html {
 /* Superscript position next to inline text links. */
 .lede a .ext-icon,
 .site-footer p a .ext-icon,
-.accordion-panel p a .ext-icon {
+.accordion-panel p a .ext-icon,
+.card-hit .ext-icon {
   vertical-align: super;
   margin-left: 0.22em;
 }
