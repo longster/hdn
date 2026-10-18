@@ -858,6 +858,12 @@ html {
   border-color: var(--accent);
 }
 
+/* Header text goes green on hover/focus, marking it as interactive. */
+.accordion-item:hover .accordion-button,
+.accordion-item:focus-within .accordion-button {
+  color: var(--accent-deep);
+}
+
 .accordion-button {
   width: 100%;
   display: flex;
