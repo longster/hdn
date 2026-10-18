@@ -470,10 +470,7 @@ html {
 
 .dir-card.is-link:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
 
-/* Underline + external mark on hover/focus so the card reads as clickable */
-.dir-card.is-link:hover .card-hit,
-.dir-card.is-link:focus-within .card-hit { text-decoration: underline; }
-
+/* External mark appears on hover/focus so the title reads as a link */
 .card-hit .ext-icon { opacity: 0; }
 
 .dir-card.is-link:hover .card-hit .ext-icon,
