@@ -325,10 +325,18 @@ function renderEvents() {
   }
   list.innerHTML = upcoming
     .map(function (e) {
+      // Same stretched-link treatment as directory cards: the title anchors
+      // the event link and its tap area covers the card.
+      var title = esc(e.name);
+      if (e.link) {
+        title = '<a class="card-hit" href="' + esc(e.link) + '" target="_blank" rel="noopener">' +
+          esc(e.name) + " " + EXT_ICON +
+          '<span class="visually-hidden">, opens in new tab</span></a>';
+      }
       return (
-        '<div class="dir-card event-card">' +
+        '<div class="dir-card event-card' + (e.link ? " is-link" : "") + '">' +
         (e.date ? '<p class="event-date">' + esc(eventDateLabel(e.date)) + "</p>" : "") +
-        "<h3>" + esc(e.name) + "</h3>" +
+        "<h3>" + title + "</h3>" +
         (e.location ? '<p class="event-location">' + esc(e.location) + "</p>" : "") +
         (e.description ? '<p class="dir-desc">' + esc(e.description) + "</p>" : "") +
         (e.link
