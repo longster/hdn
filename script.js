@@ -356,8 +356,7 @@ function jobCard(j) {
   return (
     '<a class="job-chip" href="' + esc(j.link) + '" target="_blank" rel="noopener" aria-label="Visit ' + esc(j.title) + ', opens in new tab">' +
     '<img class="job-chip-logo" src="' + esc(j.logo || FALLBACK_LOGO) + '" alt="" loading="lazy" width="45" height="45">' +
-    '<span class="job-chip-title">' + esc(j.title) + "</span>" +
-    extIcon("job-chip-icon") +
+    '<span class="job-chip-title">' + esc(j.title) + " " + extIcon("job-chip-icon") + "</span>" +
     "</a>"
   );
 }
