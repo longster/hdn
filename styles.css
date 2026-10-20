@@ -752,6 +752,67 @@ html {
 
 .event-location { font-size: 0.9rem; color: var(--muted); }
 
+/* ---------- featured event ---------- */
+/* Full-width editorial slot above the events grid. */
+.featured-card {
+  position: relative;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  margin-bottom: 1.1rem;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.featured-card.is-link { cursor: pointer; }
+
+.featured-card.is-link:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent);
+  box-shadow: var(--shadow-lift);
+}
+
+.featured-card.is-link:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.featured-card .card-hit::after { border-radius: var(--radius-lg); }
+
+.featured-card .card-links a { position: relative; z-index: 2; }
+
+.featured-img { display: block; width: 100%; height: auto; }
+
+.featured-body { padding: 1.6rem; }
+
+.featured-card h3 {
+  font-family: var(--font-display);
+  color: var(--ink);
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.45rem;
+  text-wrap: balance;
+}
+
+.featured-eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--warm);
+  margin-bottom: 0.5rem;
+}
+
+.featured-highlight {
+  background: var(--surface-soft);
+  border-left: 3px solid var(--warm);
+  border-radius: 8px;
+  padding: 0.85rem 1rem;
+  margin-top: 1rem;
+}
+
 .subsection-heading {
   font-family: var(--font-display);
   color: var(--ink);
