@@ -303,6 +303,41 @@ function renderSocials() {
   grid.innerHTML = socialRows().map(dirCard).join("");
 }
 
+// ---------- featured event ----------
+// One editorial feature slot (SITE_DATA.featuredEvent), rendered full
+// width above the events list. Hand-set in data.js and preserved by the
+// Notion sync; hides itself after its end date passes.
+function renderFeaturedEvent() {
+  var wrap = document.getElementById("featured-event");
+  if (!wrap || typeof SITE_DATA === "undefined") return;
+  var f = SITE_DATA.featuredEvent;
+  if (!f || !f.name) return;
+  if (f.endDate) {
+    var end = new Date(f.endDate + "T23:59:59");
+    if (!isNaN(end) && new Date() > end) return;
+  }
+  var title = esc(f.name);
+  if (f.link) {
+    title = '<a class="card-hit" href="' + esc(f.link) + '" target="_blank" rel="noopener">' +
+      esc(f.name) + " " + EXT_ICON +
+      '<span class="visually-hidden">, opens in new tab</span></a>';
+  }
+  wrap.innerHTML =
+    '<div class="featured-card' + (f.link ? " is-link" : "") + '">' +
+    (f.image ? '<img class="featured-img" src="' + esc(f.image) + '" alt="">' : "") +
+    '<div class="featured-body">' +
+    '<p class="featured-eyebrow">Featured event</p>' +
+    (f.dateLabel ? '<p class="event-date">' + esc(f.dateLabel) + "</p>" : "") +
+    "<h3>" + title + "</h3>" +
+    (f.location ? '<p class="event-location">' + esc(f.location) + "</p>" : "") +
+    (f.description ? '<p class="dir-desc">' + esc(f.description) + "</p>" : "") +
+    (f.highlight ? '<p class="featured-highlight">' + esc(f.highlight) + "</p>" : "") +
+    (f.link
+      ? '<div class="dir-foot"><div class="card-links">' + iconLink(f.link, "More info for " + f.name, "website", "More info") + "</div></div>"
+      : "") +
+    "</div></div>";
+}
+
 // ---------- events ----------
 function renderEvents() {
   var list = document.getElementById("events-list");
@@ -486,6 +521,7 @@ function renderFaq() {
 renderFilterTags();
 renderDirectory();
 renderSocials();
+renderFeaturedEvent();
 renderEvents();
 renderJobs();
 renderGuides();
