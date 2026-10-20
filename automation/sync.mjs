@@ -28,6 +28,9 @@
 //   FAQ: Question (title), Answer (rich_text), Order (number),
 //     Status (select: Published / Draft).
 // Guides are not in Notion; the existing guides array is preserved.
+// featuredEvent is also not in Notion: it is a hand-set editorial slot
+// in data.js (one featured event, rendered full width above the events
+// list) and is preserved across syncs the same way.
 //
 // PUBLISH RULES (mirror the Worker holding states in worker.js):
 //   Directory: Status = "Active" only.
@@ -338,6 +341,7 @@ async function main() {
     source: old.source || "Notion CMS, HDN workspace",
     directory,
     events,
+    featuredEvent: old.featuredEvent || null,
     postings,
     jobs: old.jobs || [],
     faqs,
