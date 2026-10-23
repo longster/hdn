@@ -40,6 +40,12 @@
 //   Jobs: Status = "Active" only. "Filled" is the holding state for
 //     unreviewed postings and never publishes.
 //   FAQ: Status = "Published" only, ordered by Order.
+//   Serves (all three content DBs, added in Echode Phase 1): HDN
+//     publishes only rows whose Serves includes "HTX", plus rows
+//     with an empty Serves (the form Worker does not set Serves, so
+//     empty means a Houston submission by default). Rows serving
+//     only other cities (ATX / DFW / SAT / TX) belong to the Echode
+//     city sites and must never leak onto HDN.
 // Logos: the sync never writes logos to Notion. When reading, a
 // Directory row's Logo file property (a file property) is fetched
 // and embedded as a data URI; otherwise the previous data.js logo
@@ -62,6 +68,7 @@ const MAP = {
     verified: "Last verified",
     logo: "Logo",
     status: "Status",
+    serves: "Serves",
   },
   events: {
     name: "Name",
@@ -71,6 +78,7 @@ const MAP = {
     link: "Link",
     source: "Source",
     status: "Status",
+    serves: "Serves",
   },
   jobs: {
     title: "Title",
@@ -79,6 +87,7 @@ const MAP = {
     link: "Link",
     expiry: "Expiry date",
     status: "Status",
+    serves: "Serves",
   },
   faq: { question: "Question", answer: "Answer", order: "Order", status: "Status" },
 };
@@ -153,6 +162,20 @@ function readText(page, name) {
 function readSelect(page, name) {
   return page.properties?.[name]?.select?.name || "";
 }
+function readMultiSelect(page, name) {
+  const p = page.properties?.[name];
+  if (!p || p.type !== "multi_select") return [];
+  return (p.multi_select || []).map((o) => o.name);
+}
+// HDN gate: a row belongs on HDN when its Serves includes HTX, or
+// when Serves is empty (form submissions never set it). If the
+// property is missing from the schema entirely, keep every row
+// rather than break the site.
+function servesHouston(page, schema, servesProp) {
+  if (!(servesProp in schema.props)) return true;
+  const serves = readMultiSelect(page, servesProp);
+  return serves.length === 0 || serves.includes("HTX");
+}
 function readUrl(page, name) {
   return page.properties?.[name]?.url || "";
 }
@@ -218,7 +241,8 @@ async function main() {
   if (!("Status" in dirSchema.props)) {
     throw new Error("HDN Directory has no Status property. Add it (select: Active / Pending review / Archived) before sync can publish.");
   }
-  const dirRows = await queryByStatus(dirDb, MAP.directory.status, "Active");
+  const dirRows = (await queryByStatus(dirDb, MAP.directory.status, "Active"))
+    .filter((page) => servesHouston(page, dirSchema, MAP.directory.serves));
   const directory = [];
   const oldByName = new Map((old.directory || []).map((r) => [r.name, r]));
   for (const page of dirRows) {
@@ -265,7 +289,8 @@ async function main() {
   if (!("Status" in evSchema.props)) {
     throw new Error("HDN Events has no Status property. Add it (select: Upcoming / Past / Cancelled) before sync can publish.");
   }
-  const evRows = await queryByStatus(evDb, MAP.events.status, "Upcoming");
+  const evRows = (await queryByStatus(evDb, MAP.events.status, "Upcoming"))
+    .filter((page) => servesHouston(page, evSchema, MAP.events.serves));
   const events = evRows
     .map((page) => {
       const m = MAP.events;
@@ -290,7 +315,8 @@ async function main() {
   if (!("Status" in jobSchema.props)) {
     throw new Error("HDN Jobs has no Status property. Add it (select: Active / Expired / Filled) before sync can publish.");
   }
-  const jobRows = await queryByStatus(jobDb, MAP.jobs.status, "Active");
+  const jobRows = (await queryByStatus(jobDb, MAP.jobs.status, "Active"))
+    .filter((page) => servesHouston(page, jobSchema, MAP.jobs.serves));
   const postings = [];
   // The Jobs DB holds the curated job-board chips, not postings. A row
   // whose title matches a chip is a board, never a posting; only other
