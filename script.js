@@ -194,7 +194,7 @@ function dirCard(r) {
 
 function matchesSearch(r, term) {
   if (!term) return true;
-  var hay = (r.name + " " + r.description + " " + r.category).toLowerCase();
+  var hay = (r.name + " " + r.description + " " + (r.categories && r.categories.length ? r.categories : [r.category || ""]).join(" ")).toLowerCase();
   return hay.indexOf(term) !== -1;
 }
 
@@ -204,7 +204,7 @@ function renderDirectory() {
   var empty = document.getElementById("directory-empty");
   if (!grid) return;
   var rows = directoryRows().filter(function (r) {
-    var okCat = activeCategory === "All" || r.category === activeCategory;
+    var okCat = activeCategory === "All" || (r.categories && r.categories.length ? r.categories : [r.category || ""]).indexOf(activeCategory) >= 0;
     return okCat && matchesSearch(r, searchTerm);
   });
   grid.innerHTML = rows.map(dirCard).join("");
@@ -253,7 +253,7 @@ function renderFilterTags() {
   if (!wrap || typeof SITE_DATA === "undefined") return;
   var present = {};
   directoryRows().forEach(function (r) {
-    if (r.category) present[r.category] = true;
+    (r.categories && r.categories.length ? r.categories : [r.category]).forEach(function (c) { if (c) present[c] = true; });
   });
   var cats = ["All"].concat(
     CATEGORY_ORDER.filter(function (c) {

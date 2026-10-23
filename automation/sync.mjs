@@ -159,6 +159,17 @@ function readText(page, name) {
   if (p.type === "title") return (p.title || []).map((t) => t.plain_text).join("");
   return "";
 }
+// Category may be a select (one value) or, after the 2026-10-23
+// multi-category conversion, a multi_select (up to two values:
+// primary plus one more). Read either shape into a list.
+function readCategoryList(page, name) {
+  const p = page.properties?.[name];
+  if (!p) return [];
+  if (p.type === "multi_select") return (p.multi_select || []).map((o) => o.name).filter(Boolean).slice(0, 2);
+  if (p.type === "select") return p.select?.name ? [p.select.name] : [];
+  return [];
+}
+
 function readSelect(page, name) {
   return page.properties?.[name]?.select?.name || "";
 }
@@ -268,9 +279,11 @@ async function main() {
       if (!ig) ig = website;
       website = "";
     }
+    const categoryList = readCategoryList(page, m.category);
     directory.push({
       name,
-      category: readSelect(page, m.category),
+      category: categoryList[0] || "",
+      categories: categoryList,
       description: readText(page, m.description),
       website,
       facebook: readUrl(page, m.facebook),
