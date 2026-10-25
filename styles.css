@@ -232,7 +232,7 @@ html {
 .hero {
   position: relative;
   overflow: hidden;
-  padding: 5.5rem 1.5rem 4.5rem;
+  padding: 7rem 1.5rem 4.5rem; /* breathing room between the fixed pill and the kicker */
 }
 
 /* Hero scene: aurora glow behind a network of connected nodes,
@@ -1176,36 +1176,15 @@ html {
 /* ---------- responsive ---------- */
 /* Nav collapses to the hamburger menu at tablet widths. */
 @media (max-width: 876px) {
-  .nav-toggle { display: flex; }
-
-  .site-nav {
-    display: none;
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    flex-direction: column;
-    align-items: stretch;
-    gap: 0;
-    background: var(--header-bg);
-    border: 1px solid var(--hairline);
-    border-top: 0;
-    border-radius: 0 0 18px 18px;
-    padding: 0.5rem 1.5rem 1rem;
-  }
-
-  .site-nav.open { display: flex; }
-
-  .site-nav a { padding: 0.7rem 0; border-top: 1px solid var(--hairline); }
-  .site-nav a:first-child { border-top: 0; }
-  .nav-cta { text-align: center; margin-top: 0.5rem; }
-
-  /* Theme toggle stays in the header on mobile, next to the hamburger. */
-  .site-header .theme-toggle { margin-left: auto; }
+  /* No hamburger menu on mobile: header keeps logo + Get Listed + theme only.
+     Base .site-nav is already a horizontal row, so only the CTA stays visible
+     and its margin-left:auto parks it at the right edge next to the toggle. */
+  .nav-toggle { display: none; }
+  .site-nav a:not(.nav-cta) { display: none; }
 }
 
 @media (max-width: 760px) {
-  .hero { padding: 5.5rem 1.5rem 3.2rem; } /* top clears the fixed pill */
+  .hero { padding: 7rem 1.5rem 3.2rem; } /* top clears the fixed pill with room to spare */
   .section { padding: 3.4rem 1.5rem; }
   .card-list { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
 }
@@ -1372,3 +1351,7 @@ html {
   :root:not([data-theme="light"]) .notice-logo-dark { display: none; }
   :root:not([data-theme="light"]) .notice-logo-light { display: inline-block; }
 }
+
+/* ---------- Announcement logo: logo on its own line, "is live" below ---------- */
+.site-notice .notice-logo-link { display: block; }
+.site-notice .notice-live { display: block; margin-top: 0.35rem; }
