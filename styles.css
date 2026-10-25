@@ -102,20 +102,31 @@ html {
 }
 
 /* ---------- header ---------- */
+/* Floating pill, mirroring Echode's header geometry. Brand stays HDN:
+   warm paper translucent bg, green accent, HDN logo mark and links. */
 .site-header {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(100% - 12px);
+  max-width: var(--maxw);
   z-index: 50;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 1rem;
-  padding: 0.7rem 1.5rem;
+  padding: 12px 22px;
   background: var(--header-bg);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border-bottom: 1px solid var(--hairline);
+  border: 1px solid var(--hairline);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
 }
+
+/* Slimmer mark so the pill stays slim like Echode's; 60px mark restorable. */
+.site-header .logo { height: 40px; width: auto; }
 
 .brand {
   display: inline-flex;
@@ -1074,6 +1085,10 @@ html {
   max-width: var(--maxw);
   margin: 0 auto;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
 }
 
 .footer-brand { margin-bottom: 0; }
@@ -1102,7 +1117,7 @@ html {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.4rem 1.5rem;
-  margin: 1.3rem 0 1.5rem;
+  margin: 0;
 }
 
 .footer-nav a {
@@ -1143,6 +1158,9 @@ html {
   border-top: 1px solid var(--hairline);
   padding: 1.4rem 1.5rem 0;
   text-align: left;
+  max-width: var(--maxw);
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .footer-bottom p { margin: 0; font-size: 0.88rem; }
@@ -1170,7 +1188,9 @@ html {
     align-items: stretch;
     gap: 0;
     background: var(--header-bg);
-    border-bottom: 1px solid var(--hairline);
+    border: 1px solid var(--hairline);
+    border-top: 0;
+    border-radius: 0 0 18px 18px;
     padding: 0.5rem 1.5rem 1rem;
   }
 
@@ -1185,7 +1205,7 @@ html {
 }
 
 @media (max-width: 760px) {
-  .hero { padding: 4rem 1.5rem 3.2rem; }
+  .hero { padding: 5.5rem 1.5rem 3.2rem; } /* top clears the fixed pill */
   .section { padding: 3.4rem 1.5rem; }
   .card-list { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
 }
@@ -1338,3 +1358,17 @@ html {
 .site-notice p { margin-bottom: 0.4rem; }
 .site-notice p:last-child { margin-bottom: 0; }
 .site-notice a { color: var(--accent-deep); font-weight: 700; }
+
+/* ---------- Announcement logo: small Echode wordmark, theme-swapped ---------- */
+.site-notice .notice-title img {
+  height: 22px;
+  width: auto;
+  vertical-align: middle;
+}
+.notice-logo-light { display: none; }
+:root[data-theme="dark"] .notice-logo-dark { display: none; }
+:root[data-theme="dark"] .notice-logo-light { display: inline-block; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .notice-logo-dark { display: none; }
+  :root:not([data-theme="light"]) .notice-logo-light { display: inline-block; }
+}
