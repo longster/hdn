@@ -207,6 +207,9 @@ html {
 
 .nav-cta:hover { border-color: var(--accent); }
 
+/* CTA + theme on one row, ATX-style: Get Listed flexes, toggle right after it. */
+.nav-cta-row { display: flex; align-items: center; gap: 14px; }
+
 .nav-toggle {
   display: none;
   flex-direction: column;
@@ -1176,11 +1179,30 @@ html {
 /* ---------- responsive ---------- */
 /* Nav collapses to the hamburger menu at tablet widths. */
 @media (max-width: 876px) {
-  /* No hamburger menu on mobile: header keeps logo + Get Listed + theme only.
-     Base .site-nav is already a horizontal row, so only the CTA stays visible
-     and its margin-left:auto parks it at the right edge next to the toggle. */
-  .nav-toggle { display: none; }
-  .site-nav a:not(.nav-cta) { display: none; }
+  /* Mobile menu, ATX-style: 2-line hamburger opens a floating card below the
+     pill; Get Listed + theme share one row at the end of the menu. */
+  .nav-toggle { display: flex; }
+
+  .site-nav {
+    display: none;
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--header-bg);
+    border: 1px solid var(--hairline);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lift);
+    padding: 10px;
+  }
+
+  .site-nav.open { display: flex; }
+
+  .site-nav a:not(.nav-cta) { padding: 8px 14px; }
+  .site-nav .nav-cta-row .nav-cta { flex: 1; text-align: center; }
 }
 
 @media (max-width: 760px) {
