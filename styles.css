@@ -1318,3 +1318,23 @@ html {
   .explore-city img { transition: none; }
   .explore-city:hover img { transform: none; }
 }
+
+/* ---------- Site notice (temporary Echode announcement) ---------- */
+.site-notice {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius);
+  padding: 1.1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+}
+.site-notice .notice-title {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 1.15rem;
+  color: var(--ink);
+  margin-bottom: 0.4rem;
+}
+.site-notice p { margin-bottom: 0.4rem; }
+.site-notice p:last-child { margin-bottom: 0; }
+.site-notice a { color: var(--accent-deep); font-weight: 700; }
