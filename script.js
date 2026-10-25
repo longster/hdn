@@ -71,6 +71,9 @@ function eventDateLabel(iso) {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && nav.classList.contains("open")) close(true);
   });
+  document.addEventListener("click", (e) => {
+    if (nav.classList.contains("open") && !nav.contains(e.target) && !toggle.contains(e.target)) close(false);
+  });
   nav.querySelectorAll("a").forEach((a) =>
     a.addEventListener("click", () => close(false))
   );

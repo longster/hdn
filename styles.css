@@ -207,8 +207,6 @@ html {
 
 .nav-cta:hover { border-color: var(--accent); }
 
-/* CTA + theme on one row, ATX-style: Get Listed flexes, toggle right after it. */
-.nav-cta-row { display: flex; align-items: center; gap: 14px; }
 
 .nav-toggle {
   display: none;
@@ -229,6 +227,14 @@ html {
   height: 2px;
   background: var(--ink);
   border-radius: 2px;
+}
+
+/* Hamburger animates to an X while the menu is open (2 lines meet in the middle). */
+.nav-toggle span { transition: transform 0.25s ease; }
+.nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(3.5px) rotate(45deg); }
+.nav-toggle[aria-expanded="true"] span:last-child { transform: translateY(-3.5px) rotate(-45deg); }
+@media (prefers-reduced-motion: reduce) {
+  .nav-toggle span { transition: none; }
 }
 
 /* ---------- hero ---------- */
@@ -1179,9 +1185,10 @@ html {
 /* ---------- responsive ---------- */
 /* Nav collapses to the hamburger menu at tablet widths. */
 @media (max-width: 876px) {
-  /* Mobile menu, ATX-style: 2-line hamburger opens a floating card below the
-     pill; Get Listed + theme share one row at the end of the menu. */
+  /* Theme stays in the header row next to the hamburger; the menu holds the
+     section links plus a full-width Get Listed button. */
   .nav-toggle { display: flex; }
+  .site-header .theme-toggle { margin-left: auto; }
 
   .site-nav {
     display: none;
@@ -1202,7 +1209,7 @@ html {
   .site-nav.open { display: flex; }
 
   .site-nav a:not(.nav-cta) { padding: 8px 14px; }
-  .site-nav .nav-cta-row .nav-cta { flex: 1; text-align: center; }
+  .site-nav .nav-cta { display: block; text-align: center; margin-top: 6px; }
 }
 
 @media (max-width: 760px) {
