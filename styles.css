@@ -501,6 +501,14 @@ html {
   border: 1px solid var(--hairline);
 }
 
+/* Thumbnails hidden (2026-10-25): directory and social cards show text only.
+   Logos stay in the data, so this is reversible. Featured event, job board
+   chips, job postings, and explore-city images are untouched. */
+#directory-grid .dir-logo,
+#socials-grid .dir-logo {
+  display: none;
+}
+
 .dir-eyebrow {
   font-size: 0.74rem;
   font-weight: 700;
