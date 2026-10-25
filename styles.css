@@ -96,9 +96,9 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-/* Keep anchored sections clear of the sticky header. */
+/* Keep anchored sections clear of the fixed pill header. */
 html {
-  scroll-padding-top: 5.5rem;
+  scroll-padding-top: 6.5rem;
 }
 
 /* ---------- header ---------- */
@@ -125,8 +125,8 @@ html {
   box-shadow: var(--shadow);
 }
 
-/* Slimmer mark so the pill stays slim like Echode's; 60px mark restorable. */
-.site-header .logo { height: 40px; width: auto; }
+/* 54px: 35% larger than the 40px pill mark, per his call 2026-10-25. */
+.site-header .logo { height: 54px; width: auto; }
 
 .brand {
   display: inline-flex;
