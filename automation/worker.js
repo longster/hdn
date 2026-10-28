@@ -302,7 +302,7 @@ export default {
 
     // Honeypot: bots fill it, humans never see it. Quietly accept and
     // drop the submission so the bot learns nothing.
-    if (body.company) {
+    if (body.mx_check) {
       return jsonResponse(origin, 200, { ok: true });
     }
 
